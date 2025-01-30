@@ -8,7 +8,7 @@
 public abstract class Animal
 {
     // Whether the animal is alive or not.
-    //test
+    //test nfeoiudvhneouvoe
     private boolean alive;
     // The animal's position.
     private Location location;
