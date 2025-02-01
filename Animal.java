@@ -1,3 +1,4 @@
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -36,14 +37,19 @@ public abstract class Animal
     abstract public void act(Field currentField, Field nextFieldState);
         
     /**
-     * If a male and female are in a neighbouring cell,
-     * the creatures can breed
+     * Checks if there is a compatible mate in the adjacent cells.
+     * @param field The field to check for adjacent animals.
+     * @return true if a compatible mate is found, false otherwise
      */
-    public void meet() {
-        // im thinking: when two animals of the same type and different genders
-        // are in neighbouring cells to each other, set a boolean 'gendersTogether'
-        // to true which allows both animals to have a chance of breeding in a
-        // neighbouring cell
+    public boolean hasCompatibleMate(Field field) {
+        List<Location> adjacentLocations = field.getAdjacentLocations(getLocation());
+        for (Location loc : adjacentLocations) {
+            Animal animal = field.getAnimalAt(loc);
+            if ((animal != null) && (animal.getClass() == this.getClass()) && (animal.isFemale() != this.isFemale())) {
+                return true;
+            }
+        }
+        return false;
     }
     
     /**
