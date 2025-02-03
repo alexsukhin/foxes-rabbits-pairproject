@@ -4,20 +4,26 @@ import java.util.*;
  * A simple predator-prey simulator, based on a rectangular field containing 
  * rabbits and foxes.
  * 
- * @author David J. Barnes and Michael Kölling
- * @version 7.1
+ * @author David J. Barnes, Aryan Sanvee Vijayan and Michael Kölling
+ * @version 02/02/2025
  */
 public class Simulator
 {
     // Constants representing configuration information for the simulation.
     // The default width for the grid.
-    private static final int DEFAULT_WIDTH = 120;
+    private static final int DEFAULT_WIDTH = 150;
     // The default depth of the grid.
-    private static final int DEFAULT_DEPTH = 80;
+    private static final int DEFAULT_DEPTH = 100;
     // The probability that a fox will be created in any given grid position.
-    private static final double FOX_CREATION_PROBABILITY = 0.02;
+    private static final double FOX_CREATION_PROBABILITY = 0.03;
     // The probability that a rabbit will be created in any given position.
-    private static final double RABBIT_CREATION_PROBABILITY = 0.08;    
+    private static final double RABBIT_CREATION_PROBABILITY = 0.05;    
+    // The probability that a deer will be created in any given position.
+    private static final double DEER_CREATION_PROBABILITY = 0.05;
+    // The probability that a snake will be created in any given position.
+    private static final double SNAKE_CREATION_PROBABILITY = 0.02;
+    // The probability that a wolf will be created in any given position.
+    private static final double WOLF_CREATION_PROBABILITY = 0.02;
 
     // The current state of the field.
     private Field field;
@@ -119,7 +125,22 @@ public class Simulator
         field.clear();
         for(int row = 0; row < field.getDepth(); row++) {
             for(int col = 0; col < field.getWidth(); col++) {
-                if(rand.nextDouble() <= FOX_CREATION_PROBABILITY) {
+                if(rand.nextDouble() <= DEER_CREATION_PROBABILITY) {
+                    Location location = new Location(row, col);
+                    Deer deer = new Deer(true, location);
+                    field.placeAnimal(deer, location);
+                }
+                else if(rand.nextDouble() <= WOLF_CREATION_PROBABILITY) {
+                    Location location = new Location(row, col);
+                    Wolf wolf = new Wolf(true, location);
+                    field.placeAnimal(wolf, location);
+                }
+                else if(rand.nextDouble() <= SNAKE_CREATION_PROBABILITY) {
+                    Location location = new Location(row, col);
+                    Snake snake = new Snake(true, location);
+                    field.placeAnimal(snake, location);
+                }
+                else if(rand.nextDouble() <= FOX_CREATION_PROBABILITY) {
                     Location location = new Location(row, col);
                     Fox fox = new Fox(true, location);
                     field.placeAnimal(fox, location);

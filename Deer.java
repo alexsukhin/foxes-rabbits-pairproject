@@ -1,40 +1,40 @@
-import java.util.List;
 import java.util.Random;
+import java.util.List;
 
 /**
- * A simple model of a rabbit.
- * Rabbits age, move, breed, and die.
- * 
- * @author David J. Barnes, Aryan Sanvee Vijayan and Michael Kölling
+ * A simple model of a deer.
+ * Deer age, move, breed, and die..
+ *
+ * @Aryan Sanvee Vijayan
  * @version 02/02/2025
  */
-public class Rabbit extends Prey
+public class Deer extends Prey
 {
-    // Characteristics shared by all rabbits (class variables).
-    // The age at which a rabbit can start to breed.
-    private static final int BREEDING_AGE = 10;
-    // The age to which a rabbit can live.
-    private static final int MAX_AGE = 30;
-    // The likelihood of a rabbit breeding.
-    private static final double BREEDING_PROBABILITY = 0.12;
+    // Characteristics shared by all deers (class variables).
+    // The age at which a deer can start to breed.
+    private static final int BREEDING_AGE = 15;
+    // The age to which a deer can live.
+    private static final int MAX_AGE = 175;
+    // The likelihood of a deer breeding.
+    private static final double BREEDING_PROBABILITY = 0.1;
     // The maximum number of births.
-    private static final int MAX_LITTER_SIZE = 5;
+    private static final int MAX_LITTER_SIZE = 3;
     // A shared random number generator to control breeding.
     private static final Random rand = Randomizer.getRandom();
     
     // Individual characteristics (instance fields).
     
-    // The rabbit's age.
+    // The deer's age.
     private int age;
 
     /**
-     * Create a new rabbit. A rabbit may be created with age
+     * Create a new deer. A deer may be created with age
      * zero (a new born) or with a random age.
      * 
-     * @param randomAge If true, the rabbit will have a random age.
+     * @param randomAge If true, the deer will have a random age.
      * @param location The location within the field.
      */
-    public Rabbit(boolean randomAge, Location location)
+    public Deer(boolean randomAge, Location location)
     {
         super(location);
         age = 0;
@@ -45,7 +45,7 @@ public class Rabbit extends Prey
 
     @Override
     public String toString() {
-        return "Rabbit{" +
+        return "Deer{" +
                 "age=" + age +
                 ", alive=" + isAlive() +
                 ", location=" + getLocation() +
@@ -54,7 +54,7 @@ public class Rabbit extends Prey
 
     /**
      * Increase the age.
-     * This could result in the rabbit's death.
+     * This could result in the deer's death.
      */
     protected void incrementAge()
     {
@@ -65,9 +65,9 @@ public class Rabbit extends Prey
     }
 
     /**
-     * A rabbit can breed successfully if it has reached the breeding age,
-     * and luck is on its side.
-     * @return true if the rabbit breeds successfully, false otherwise.
+     * A deer can breed successfully if it has reached the breeding age,
+     * and luck is on it's side.
+     * @return true if the deer breeds successfully, false otherwise.
      */
     protected boolean breedSuccess()
     {
@@ -75,12 +75,12 @@ public class Rabbit extends Prey
     }
     
     /**
-     * Create a new rabbit as offspring.
+     * Create a new deer as offspring.
      * @param loc The location off the new offspring.
      * @return The offspring.
      */
     protected Animal offspring(Location loc) {
-        Rabbit young = new Rabbit(false,loc);
+        Deer young = new Deer(false,loc);
         return young;
     }
     

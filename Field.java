@@ -4,8 +4,8 @@ import java.util.*;
  * Represent a rectangular grid of field positions.
  * Each position is able to store a single animal/object.
  * 
- * @author David J. Barnes and Michael Kölling
- * @version 7.0
+ * @author David J. Barnes, Aryan Sanvee Vijayan and Michael Kölling
+ * @version 02/02/2025
  */
 public class Field
 {
@@ -118,7 +118,8 @@ public class Field
      */
     public void fieldStats()
     {
-        int numFoxes = 0, numRabbits = 0;
+        int numFoxes = 0, numRabbits = 0, numDeers = 0, 
+        numSnakes = 0, numWolves = 0;
         for(Animal anAnimal : field.values()) {
             if(anAnimal instanceof Fox fox) {
                 if(fox.isAlive()) {
@@ -130,9 +131,27 @@ public class Field
                     numRabbits++;
                 }
             }
+            else if(anAnimal instanceof Deer deer) {
+                if(deer.isAlive()) {
+                    numDeers++;
+                }
+            }
+            else if(anAnimal instanceof Snake snake) {
+                if(snake.isAlive()) {
+                    numSnakes++;
+                }
+            }
+            else if(anAnimal instanceof Wolf wolf) {
+                if(wolf.isAlive()) {
+                    numWolves++;
+                }
+            }
         }
         System.out.println("Rabbits: " + numRabbits +
-                           " Foxes: " + numFoxes);
+                           " Foxes: " + numFoxes +
+                           " Deers: " + numDeers +
+                           " Snakes: " + numSnakes +
+                           " Wolves: " + numWolves);
     }
 
     /**
@@ -151,8 +170,12 @@ public class Field
     {
         boolean rabbitFound = false;
         boolean foxFound = false;
+        boolean deerFound = false;
+        boolean snakeFound = false;
+        boolean wolfFound = false;
         Iterator<Animal> it = animals.iterator();
-        while(it.hasNext() && ! (rabbitFound && foxFound)) {
+        while(it.hasNext() && ! (rabbitFound && foxFound && wolfFound
+                                && deerFound && snakeFound)) {
             Animal anAnimal = it.next();
             if(anAnimal instanceof Rabbit rabbit) {
                 if(rabbit.isAlive()) {
@@ -164,8 +187,23 @@ public class Field
                     foxFound = true;
                 }
             }
+            else if(anAnimal instanceof Deer deer) {
+                if(deer.isAlive()) {
+                    deerFound = true;
+                }
+            }
+            else if(anAnimal instanceof Snake snake) {
+                if(snake.isAlive()) {
+                    snakeFound = true;
+                }
+            }
+            else if(anAnimal instanceof Wolf wolf) {
+                if(wolf.isAlive()) {
+                    wolfFound = true;
+                }
+            }
         }
-        return rabbitFound && foxFound;
+        return rabbitFound && foxFound && deerFound && snakeFound && wolfFound;
     }
     
     /**

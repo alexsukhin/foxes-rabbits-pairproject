@@ -10,8 +10,8 @@ import java.util.Map;
  * Colors for each type of species can be defined using the
  * setColor method.
  * 
- * @author David J. Barnes and Michael Kölling
- * @version 7.0
+ * @author David J. Barnes, Aryan Sanvee Vijayan and Michael Kölling
+ * @version 02/02/2025
  */
 public class SimulatorView extends JFrame
 {
@@ -43,8 +43,11 @@ public class SimulatorView extends JFrame
         colors = new LinkedHashMap<>();
         setColor(Rabbit.class, Color.orange);
         setColor(Fox.class, Color.blue);
+        setColor(Deer.class, Color.cyan);
+        setColor(Snake.class, Color.green);
+        setColor(Wolf.class, Color.magenta);
 
-        setTitle("Fox and Rabbit Simulation");
+        setTitle("Prey and Predator Simulation");
         stepLabel = new JLabel(STEP_PREFIX, JLabel.CENTER);
         population = new JLabel(POPULATION_PREFIX, JLabel.CENTER);
         
