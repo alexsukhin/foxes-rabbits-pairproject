@@ -1,3 +1,5 @@
+import java.util.List;
+import java.util.Random;
 
 /**
  * Common elements of foxes and rabbits.
@@ -8,10 +10,12 @@
 public abstract class Animal
 {
     // Whether the animal is alive or not.
-    //test nfeoiudvhneouvoe aaaaaaaa
     private boolean alive;
     // The animal's position.
     private Location location;
+    // Whether the animal is male or female.
+    // True for female, false for male.
+    private boolean female;
 
     /**
      * Constructor for objects of class Animal.
@@ -19,8 +23,10 @@ public abstract class Animal
      */
     public Animal(Location location)
     {
+        Random random = new Random();
         this.alive = true;
         this.location = location;
+        this.female = random.nextBoolean();
     }
     
     /**
@@ -29,6 +35,22 @@ public abstract class Animal
      * @param nextFieldState The new state being built.
      */
     abstract public void act(Field currentField, Field nextFieldState);
+        
+    /**
+     * Checks if there is a compatible mate in the adjacent cells.
+     * @param field The field to check for adjacent animals.
+     * @return true if a compatible mate is found, false otherwise
+     */
+    public boolean hasCompatibleMate(Field field) {
+        List<Location> adjacentLocations = field.getAdjacentLocations(getLocation());
+        for (Location loc : adjacentLocations) {
+            Animal animal = field.getAnimalAt(loc);
+            if ((animal != null) && (animal.getClass() == this.getClass()) && (animal.isFemale() != this.isFemale())) {
+                return true;
+            }
+        }
+        return false;
+    }
     
     /**
      * Check whether the animal is alive or not.
@@ -64,5 +86,14 @@ public abstract class Animal
     protected void setLocation(Location location)
     {
         this.location = location;
+    }
+    
+    /**
+     * Check whether the animal is female or not.
+     * @return true if the animal is female.
+     */
+    public boolean isFemale()
+    {
+        return female;
     }
 }
