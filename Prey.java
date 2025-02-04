@@ -54,12 +54,14 @@ public abstract class Prey extends Animal
     {
         // New rabbits are born into adjacent locations.
         // Get a list of adjacent free locations.
-        int births = breed();
-        if(births > 0) {
-            for (int b = 0; b < births && !freeLocations.isEmpty(); b++) {
-                Location loc = freeLocations.remove(0);
-                Animal young = offspring(loc);
-                nextFieldState.placeAnimal(young, loc);
+        if (hasCompatibleMate(nextFieldState)) {    
+            int births = breed();
+            if(births > 0) {
+                for (int b = 0; b < births && !freeLocations.isEmpty(); b++) {
+                    Location loc = freeLocations.remove(0);
+                    Animal young = offspring(loc);
+                    nextFieldState.placeAnimal(young, loc);
+                }
             }
         }
     }

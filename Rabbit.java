@@ -16,7 +16,7 @@ public class Rabbit extends Prey
     // The age to which a rabbit can live.
     private static final int MAX_AGE = 30;
     // The likelihood of a rabbit breeding.
-    private static final double BREEDING_PROBABILITY = 0.16;
+    private static final double BREEDING_PROBABILITY = 0.35;
     // The maximum number of births.
     private static final int MAX_LITTER_SIZE = 5;
     // A shared random number generator to control breeding.

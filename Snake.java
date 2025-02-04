@@ -71,10 +71,9 @@ public class Snake extends Predator
      * @return true, if the animal is a prey, otherwise false.
      */
     protected boolean isPrey(Animal animal) {
-        if(animal instanceof Rabbit rabbit) {
-                return true;
-        }
-        else {
+        if (animal instanceof Rabbit rabbit) {
+            return true;
+        } else {
             return false;
         }
     }
