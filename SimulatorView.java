@@ -22,8 +22,9 @@ public class SimulatorView extends JFrame
     private static final Color UNKNOWN_COLOR = Color.gray;
 
     private final String STEP_PREFIX = "Step: ";
+    private final String TIME_PREFIX = "Time: ";
     private final String POPULATION_PREFIX = "Population: ";
-    private final JLabel stepLabel;
+    private final JLabel northLabel;
     private final JLabel population;
     private final FieldView fieldView;
     
@@ -48,7 +49,8 @@ public class SimulatorView extends JFrame
         setColor(Wolf.class, Color.magenta);
 
         setTitle("Prey and Predator Simulation");
-        stepLabel = new JLabel(STEP_PREFIX, JLabel.CENTER);
+        // figure out why north label requires this first parameter...
+        northLabel = new JLabel(STEP_PREFIX, JLabel.CENTER);
         population = new JLabel(POPULATION_PREFIX, JLabel.CENTER);
         
         setLocation(100, 50);
@@ -56,7 +58,7 @@ public class SimulatorView extends JFrame
         fieldView = new FieldView(height, width);
 
         Container contents = getContentPane();
-        contents.add(stepLabel, BorderLayout.NORTH);
+        contents.add(northLabel, BorderLayout.NORTH);
         contents.add(fieldView, BorderLayout.CENTER);
         contents.add(population, BorderLayout.SOUTH);
         pack();
@@ -93,13 +95,18 @@ public class SimulatorView extends JFrame
      * @param step Which iteration step it is.
      * @param field The field whose status is to be displayed.
      */
-    public void showStatus(int step, Field field)
+    public void showStatus(int step, boolean night, Field field)
     {
         if(!isVisible()) {
             setVisible(true);
         }
-            
-        stepLabel.setText(STEP_PREFIX + step);
+
+        
+        if (night) {
+            northLabel.setText(STEP_PREFIX + step + " " + TIME_PREFIX + "night");
+        } else {
+            northLabel.setText(STEP_PREFIX + step + " " + TIME_PREFIX + "day");
+        }
         stats.reset();
         
         fieldView.preparePaint();

@@ -24,6 +24,10 @@ public class Simulator
     private static final double SNAKE_CREATION_PROBABILITY = 0.02;
     // The probability that a wolf will be created in any given position.
     private static final double WOLF_CREATION_PROBABILITY = 0.02;
+    // The number of steps in one day/night cycle.
+    private static final int DAY_STEPS = 50;
+    // The current state of day/night.
+    private boolean night = false;
 
     // The current state of the field.
     private Field field;
@@ -101,9 +105,12 @@ public class Simulator
         
         // Replace the old state with the new one.
         field = nextFieldState;
+        
+        // Changes the day/time cycle every 50 steps.
+        changeTime();
 
         reportStats();
-        view.showStatus(step, field);
+        view.showStatus(step, night, field);
     }
         
     /**
@@ -113,7 +120,7 @@ public class Simulator
     {
         step = 0;
         populate();
-        view.showStatus(step, field);
+        view.showStatus(step, night, field);
     }
     
     /**
@@ -175,6 +182,13 @@ public class Simulator
         }
         catch(InterruptedException e) {
             // ignore
+        }
+    }
+    
+    private void changeTime()
+    {
+        if (step % DAY_STEPS == 0) {
+            night = !night;
         }
     }
 }
