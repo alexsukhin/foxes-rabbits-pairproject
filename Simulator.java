@@ -2,8 +2,8 @@ import java.util.*;
 
 /**
  * A simple predator-prey simulator, based on a rectangular field containing 
- * rabbits and foxes.
- * 
+ * rabbits and ocelotes.
+ *  
  * @author David J. Barnes, Aryan Sanvee Vijayan and Michael Kölling
  * @version 02/02/2025
  */
@@ -14,16 +14,16 @@ public class Simulator
     private static final int DEFAULT_WIDTH = 150;
     // The default depth of the grid.
     private static final int DEFAULT_DEPTH = 100;
-    // The probability that a fox will be created in any given grid position.
-    private static final double FOX_CREATION_PROBABILITY = 0.02;
-    // The probability that a rabbit will be created in any given position.
-    private static final double RABBIT_CREATION_PROBABILITY = 0.2;    
+    // The probability that a ocelot will be created in any given grid position.
+    private static final double OCELOT_CREATION_PROBABILITY = 0.02;
+    // The probability that a armadillo will be created in any given position.
+    private static final double ARMADILLO_CREATION_PROBABILITY = 0.2;    
     // The probability that a deer will be created in any given position.
-    private static final double DEER_CREATION_PROBABILITY = 0.25;
+    private static final double DEER_CREATION_PROBABILITY = 0.2;
     // The probability that a snake will be created in any given position.
     private static final double SNAKE_CREATION_PROBABILITY = 0.02;
-    // The probability that a wolf will be created in any given position.
-    private static final double WOLF_CREATION_PROBABILITY = 0.02;
+    // The probability that a jaguar will be created in any given position.
+    private static final double JAGUAR_CREATION_PROBABILITY = 0.02;
     // The number of steps in one day/night cycle.
     private static final int DAY_STEPS = 50;
     // The current state of day/night.
@@ -89,7 +89,7 @@ public class Simulator
     
     /**
      * Run the simulation from its current state for a single step.
-     * Iterate over the whole field updating the state of each fox and rabbit.
+     * Iterate over the whole field updating the state of each ocelot and armadillo.
      */
     public void simulateOneStep()
     {
@@ -124,7 +124,7 @@ public class Simulator
     }
     
     /**
-     * Randomly populate the field with foxes and rabbits.
+     * Randomly populate the field with ocelotes and armadillos.
      */
     private void populate()
     {
@@ -137,25 +137,25 @@ public class Simulator
                     Deer deer = new Deer(true, location);
                     field.placeAnimal(deer, location);
                 }
-                else if(rand.nextDouble() <= WOLF_CREATION_PROBABILITY) {
+                else if(rand.nextDouble() <= JAGUAR_CREATION_PROBABILITY) {
                     Location location = new Location(row, col);
-                    Wolf wolf = new Wolf(true, location);
-                    field.placeAnimal(wolf, location);
+                    Jaguar jaguar = new Jaguar(true, location);
+                    field.placeAnimal(jaguar, location);
                 }
                 else if(rand.nextDouble() <= SNAKE_CREATION_PROBABILITY) {
                     Location location = new Location(row, col);
                     Snake snake = new Snake(true, location);
                     field.placeAnimal(snake, location);
                 }
-                else if(rand.nextDouble() <= FOX_CREATION_PROBABILITY) {
+                else if(rand.nextDouble() <= OCELOT_CREATION_PROBABILITY) {
                     Location location = new Location(row, col);
-                    Fox fox = new Fox(true, location);
-                    field.placeAnimal(fox, location);
+                    Ocelot ocelot = new Ocelot(true, location);
+                    field.placeAnimal(ocelot, location);
                 }
-                else if(rand.nextDouble() <= RABBIT_CREATION_PROBABILITY) {
+                else if(rand.nextDouble() <= ARMADILLO_CREATION_PROBABILITY) {
                     Location location = new Location(row, col);
-                    Rabbit rabbit = new Rabbit(true, location);
-                    field.placeAnimal(rabbit, location);
+                    Armadillo armadillo = new Armadillo(true, location);
+                    field.placeAnimal(armadillo, location);
                 }
                 // else leave the location empty.
             }

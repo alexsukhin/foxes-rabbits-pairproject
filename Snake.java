@@ -2,7 +2,7 @@ import java.util.*;
 
 /**
  * A simple model of a snake.
- * Snakes age, move, eat rabbits, and die.
+ * Snakes age, move, eat armadillos, and die.
  *
  * @author Aryan Sanvee Vijayan
  * @version 02/02/2025
@@ -35,7 +35,7 @@ public class Snake extends Predator
      */
     public Snake(boolean randomAge, Location location)
     {
-        super(location, Rabbit.class);
+        super(location, Armadillo.class);
         if(randomAge) {
             age = rand.nextInt(MAX_AGE);
         }
@@ -71,7 +71,7 @@ public class Snake extends Predator
      * @return true, if the animal is a prey, otherwise false.
      */
     protected boolean isPrey(Animal animal) {
-        if (animal instanceof Rabbit rabbit) {
+        if (animal instanceof Armadillo armadillo) {
             return true;
         } else {
             return false;

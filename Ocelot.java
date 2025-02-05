@@ -1,42 +1,43 @@
-import java.util.Random;
 import java.util.List;
+import java.util.Iterator;
+import java.util.Random;
 
 /**
- * A simple model of a wolf.
- * Wolves age, move, eat deer, and die.
+ * A simple model of a ocelot.
+ * Ocelotes age, move, eat armadilos, and die.
  * 
- * @author Aryan Sanvee Vijayan
+ * @author David J. Barnes, Aryan Sanvee Vijayan and Michael Kölling
  * @version 02/02/2025
  */
-public class Wolf extends Predator
+public class Ocelot extends Predator
 {
-    // Characteristics shared by all wolves (class variables).
-    // The age at which a wolf can start to breed.
+    // Characteristics shared by all ocelotes (class variables).
+    // The age at which a ocelot can start to breed.
     private static final int BREEDING_AGE = 15;
-    // The age to which a wolf can live.
-    private static final int MAX_AGE = 150;
-    // The likelihood of a wolf breeding.
-    private static final double BREEDING_PROBABILITY = 0.075;
+    // The age to which a ocelot can live.
+    private static final int MAX_AGE = 180;
+    // The likelihood of a ocelot breeding.
+    private static final double BREEDING_PROBABILITY = 0.1;
     // The maximum number of births.
-    private static final int MAX_LITTER_SIZE = 3;
+    private static final int MAX_LITTER_SIZE = 4;
     // A shared random number generator to control breeding.
     private static final Random rand = Randomizer.getRandom();
     
     // Individual characteristics (instance fields).
 
-    // The wolf's age.
+    // The ocelot's age.
     private int age;
 
     /**
-     * Create a wolf. A wolf can be created as a new born (age zero
+     * Create a ocelot. A ocelot can be created as a new born (age zero
      * and not hungry) or with a random age and food level.
      * 
-     * @param randomAge If true, the wolf will have random age and hunger level.
+     * @param randomAge If true, the ocelot will have random age and hunger level.
      * @param location The location within the field.
      */
-    public Wolf(boolean randomAge, Location location)
+    public Ocelot(boolean randomAge, Location location)
     {
-        super(location, Deer.class);
+        super(location, Armadillo.class);
         if(randomAge) {
             age = rand.nextInt(MAX_AGE);
         }
@@ -47,7 +48,7 @@ public class Wolf extends Predator
 
     @Override
     public String toString() {
-        return "Wolf{" +
+        return "Ocelot{" +
                 "age=" + age +
                 ", alive=" + isAlive() +
                 ", location=" + getLocation() +
@@ -56,7 +57,7 @@ public class Wolf extends Predator
     }
 
     /**
-     * Increase the age. This could result in the wolf's death.
+     * Increase the age. This could result in the ocelot's death.
      */
     protected void incrementAge()
     {
@@ -66,8 +67,13 @@ public class Wolf extends Predator
         }
     }
     
+    /**
+     * Check if the given animal is a prey of Ocelot.
+     * @param Animal The animal to check if its a prey.
+     * @return true, if the animal is a prey, otherwise false.
+     */
     protected boolean isPrey(Animal animal) {
-        if(animal instanceof Deer deer) {
+        if(animal instanceof Armadillo armadillo) {
                 return true;
         }
         else {
@@ -76,9 +82,9 @@ public class Wolf extends Predator
     }
     
     /**
-     * A wolf can breed successfully if it has reached the breeding age,
-     * and luck is on its side.
-     * @return true if the wolf breeds successfully, false otherwise.
+     * A ocelot can breed successfully if it has reached the breeding age;
+     * and luck is on the ocelot's side.
+     * @return true if the ocelot breeds successfully, false otherwise.
      */
     protected boolean breedSuccess()
     {
@@ -86,12 +92,12 @@ public class Wolf extends Predator
     }
     
     /**
-     * Create a new wolf as offspring.
+     * Create a new ocelot as offspring.
      * @param loc The location off the new offspring.
      * @return The offspring.
      */
     protected Animal offspring(Location loc) {
-        Wolf young = new Wolf(false,loc);
+        Ocelot young = new Ocelot(false,loc);
         return young;
     }
     

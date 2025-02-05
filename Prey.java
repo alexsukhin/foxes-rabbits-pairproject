@@ -52,7 +52,7 @@ public abstract class Prey extends Animal
      */
     protected void giveBirth(Field nextFieldState, List<Location> freeLocations)
     {
-        // New rabbits are born into adjacent locations.
+        // New armadillos are born into adjacent locations.
         // Get a list of adjacent free locations.
         if (hasCompatibleMate(nextFieldState)) {    
             int births = breed();

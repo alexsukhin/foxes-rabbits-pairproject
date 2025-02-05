@@ -10,11 +10,11 @@ import java.util.Random;
  */
 public abstract class Predator extends Animal
 {
-    // The Predator's food level, which is increased by eating rabbits.
+    // The Predator's food level, which is increased by eating armadillos.
     private int foodLevel;
-    // The food value of a single rabbit. In effect, this is the
-    // number of steps a rabbit-eating predator can go before it has to eat again.
-    private static final int RABBIT_FOOD_VALUE = 9;
+    // The food value of a single armadillo. In effect, this is the
+    // number of steps a armadillo-eating predator can go before it has to eat again.
+    private static final int ARMADILLO_FOOD_VALUE = 9;
     // The food value of a single deer. 
     private static final int DEER_FOOD_VALUE = 50;
     // For food value at start.
@@ -30,8 +30,8 @@ public abstract class Predator extends Animal
     public Predator(Location location, Class<?> prey)
     {
         super(location);
-        if (prey == Rabbit.class) {
-            foodLevel = rand.nextInt(RABBIT_FOOD_VALUE);
+        if (prey == Armadillo.class) {
+            foodLevel = rand.nextInt(ARMADILLO_FOOD_VALUE);
         }
         else if (prey == Deer.class) {
             foodLevel = rand.nextInt(DEER_FOOD_VALUE);
@@ -40,7 +40,7 @@ public abstract class Predator extends Animal
 
     /**
      * This is what the predator does most of the time: it hunts for
-     * rabbits. In the process, it might breed, die of hunger,
+     * armadillos. In the process, it might breed, die of hunger,
      * or die of old age.
      * @param currentField The field currently occupied.
      * @param nextFieldState The updated field.
@@ -99,9 +99,9 @@ public abstract class Predator extends Animal
             Location loc = it.next();
             Animal animal = field.getAnimalAt(loc);
             if(isPrey(animal)) {
-                if(animal instanceof Rabbit rabbit) {
-                    rabbit.setDead();
-                    foodLevel = RABBIT_FOOD_VALUE;
+                if(animal instanceof Armadillo armadillo) {
+                    armadillo.setDead();
+                    foodLevel = ARMADILLO_FOOD_VALUE;
                     foodLocation = loc;
                 }
                 else if(animal instanceof Deer deer) {
@@ -129,7 +129,7 @@ public abstract class Predator extends Animal
      */
     protected void giveBirth(Field nextFieldState, List<Location> freeLocations)
     {
-        // New rabbits are born into adjacent locations.
+        // New armadillos are born into adjacent locations.
         // Get a list of adjacent free locations.
         int births = breed();
         if(births > 0) {

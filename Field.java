@@ -114,21 +114,21 @@ public class Field
     }
 
     /**
-     * Print out the number of foxes and rabbits in the field.
+     * Print out the number of ocelotes and armadillos in the field.
      */
     public void fieldStats()
     {
-        int numFoxes = 0, numRabbits = 0, numDeers = 0, 
+        int numOcelotes = 0, numArmadillos = 0, numDeers = 0, 
         numSnakes = 0, numWolves = 0;
         for(Animal anAnimal : field.values()) {
-            if(anAnimal instanceof Fox fox) {
-                if(fox.isAlive()) {
-                    numFoxes++;
+            if(anAnimal instanceof Ocelot ocelot) {
+                if(ocelot.isAlive()) {
+                    numOcelotes++;
                 }
             }
-            else if(anAnimal instanceof Rabbit rabbit) {
-                if(rabbit.isAlive()) {
-                    numRabbits++;
+            else if(anAnimal instanceof Armadillo armadillo) {
+                if(armadillo.isAlive()) {
+                    numArmadillos++;
                 }
             }
             else if(anAnimal instanceof Deer deer) {
@@ -141,14 +141,14 @@ public class Field
                     numSnakes++;
                 }
             }
-            else if(anAnimal instanceof Wolf wolf) {
-                if(wolf.isAlive()) {
+            else if(anAnimal instanceof Jaguar jaguar) {
+                if(jaguar.isAlive()) {
                     numWolves++;
                 }
             }
         }
-        System.out.println("Rabbits: " + numRabbits +
-                           " Foxes: " + numFoxes +
+        System.out.println("Armadillos: " + numArmadillos +
+                           " Ocelotes: " + numOcelotes +
                            " Deers: " + numDeers +
                            " Snakes: " + numSnakes +
                            " Wolves: " + numWolves);
@@ -163,28 +163,28 @@ public class Field
     }
 
     /**
-     * Return whether there is at least one rabbit and one fox in the field.
-     * @return true if there is at least one rabbit and one fox in the field.
+     * Return whether there is at least one armadillo and one ocelot in the field.
+     * @return true if there is at least one armadillo and one ocelot in the field.
      */
     public boolean isViable()
     {
-        boolean rabbitFound = false;
-        boolean foxFound = false;
+        boolean armadilloFound = false;
+        boolean ocelotFound = false;
         boolean deerFound = false;
         boolean snakeFound = false;
-        boolean wolfFound = false;
+        boolean jaguarFound = false;
         Iterator<Animal> it = animals.iterator();
-        while(it.hasNext() && ! (rabbitFound && foxFound && wolfFound
+        while(it.hasNext() && ! (armadilloFound && ocelotFound && jaguarFound
                                 && deerFound && snakeFound)) {
             Animal anAnimal = it.next();
-            if(anAnimal instanceof Rabbit rabbit) {
-                if(rabbit.isAlive()) {
-                    rabbitFound = true;
+            if(anAnimal instanceof Armadillo armadillo) {
+                if(armadillo.isAlive()) {
+                    armadilloFound = true;
                 }
             }
-            else if(anAnimal instanceof Fox fox) {
-                if(fox.isAlive()) {
-                    foxFound = true;
+            else if(anAnimal instanceof Ocelot ocelot) {
+                if(ocelot.isAlive()) {
+                    ocelotFound = true;
                 }
             }
             else if(anAnimal instanceof Deer deer) {
@@ -197,13 +197,13 @@ public class Field
                     snakeFound = true;
                 }
             }
-            else if(anAnimal instanceof Wolf wolf) {
-                if(wolf.isAlive()) {
-                    wolfFound = true;
+            else if(anAnimal instanceof Jaguar jaguar) {
+                if(jaguar.isAlive()) {
+                    jaguarFound = true;
                 }
             }
         }
-        return rabbitFound && foxFound && deerFound && snakeFound && wolfFound;
+        return armadilloFound && ocelotFound && deerFound && snakeFound && jaguarFound;
     }
     
     /**

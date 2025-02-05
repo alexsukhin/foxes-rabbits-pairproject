@@ -42,11 +42,11 @@ public class SimulatorView extends JFrame
     {
         stats = new FieldStats();
         colors = new LinkedHashMap<>();
-        setColor(Rabbit.class, Color.orange);
-        setColor(Fox.class, Color.blue);
+        setColor(Armadillo.class, Color.orange);
+        setColor(Ocelot.class, Color.blue);
         setColor(Deer.class, Color.cyan);
         setColor(Snake.class, Color.green);
-        setColor(Wolf.class, Color.magenta);
+        setColor(Jaguar.class, Color.magenta);
 
         setTitle("Prey and Predator Simulation");
         // figure out why north label requires this first parameter...
