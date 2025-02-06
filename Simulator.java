@@ -100,7 +100,11 @@ public class Simulator
 
         List<Animal> animals = field.getAnimals();
         for (Animal anAnimal : animals) {
+            if (anAnimal instanceof TimeActive) {
+                ((TimeActive) anAnimal).actAtTime(field, nextFieldState, night);
+            } else {
             anAnimal.act(field, nextFieldState);
+            }
         }
         
         // Replace the old state with the new one.
@@ -185,6 +189,10 @@ public class Simulator
         }
     }
     
+    /**
+     * Every step cycle, checks whether we are on the 50th multiple step.
+     * If we are, changes day/night cycle via flag.
+     */
     private void changeTime()
     {
         if (step % DAY_STEPS == 0) {

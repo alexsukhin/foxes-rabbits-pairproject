@@ -9,7 +9,7 @@ import java.util.Random;
  * @author David J. Barnes, Aryan Sanvee Vijayan and Michael Kölling
  * @version 02/02/2025
  */
-public class Ocelot extends Predator
+public class Ocelot extends Predator implements TimeActive
 {
     // Characteristics shared by all ocelotes (class variables).
     // The age at which a ocelot can start to breed.
@@ -43,6 +43,22 @@ public class Ocelot extends Predator
         }
         else {
             age = 0;
+        }
+    }
+    
+    @Override
+    public void actAtTime(Field currentField, Field nextFieldState, boolean night) {
+        if (night) {
+            // Ocelots are active at night; hunting or moving around
+            act(currentField, nextFieldState);
+        } else {
+            // Ocelots are not active during the day;
+            incrementAge();
+            if (isAlive()) {
+                nextFieldState.placeAnimal(this, getLocation());
+            } else {
+                setDead();
+            }
         }
     }
 
