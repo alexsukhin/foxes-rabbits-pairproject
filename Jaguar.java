@@ -16,9 +16,9 @@ public class Jaguar extends Predator
     // The age to which a jaguar can live.
     private static final int MAX_AGE = 150;
     // The likelihood of a jaguar breeding.
-    private static final double BREEDING_PROBABILITY = 0.075;
+    private static final double BREEDING_PROBABILITY = 0.08;
     // The maximum number of births.
-    private static final int MAX_LITTER_SIZE = 3;
+    private static final int MAX_LITTER_SIZE = 2;
     private static final double NIGHT_HUNT_PROBABILITY = 0.5;
     // A shared random number generator to control breeding.
     private static final Random rand = Randomizer.getRandom();

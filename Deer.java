@@ -16,7 +16,7 @@ public class Deer extends Prey
     // The age to which a deer can live.
     private static final int MAX_AGE = 175;
     // The likelihood of a deer breeding.
-    private static final double BREEDING_PROBABILITY = 0.35;
+    private static final double BREEDING_PROBABILITY = 0.4;
     // The maximum number of births.
     private static final int MAX_LITTER_SIZE = 3;
     // A shared random number generator to control breeding.
@@ -43,24 +43,6 @@ public class Deer extends Prey
         }
     }
     
-    // @Override
-    // public void actAtTime(Field currentField, Field nextFieldState, boolean night) {
-        // if (!night) {
-            // // Deers are active at day; moving around
-            // act(currentField, nextFieldState);
-        // } else {
-            // // Deers are not active during the night;
-            // // at the night deers get absolutely devoured, should probably
-            // // fix this issue!
-            // incrementAge();
-            // if (isAlive()) {
-                // nextFieldState.placeAnimal(this, getLocation());
-            // } else {
-                // setDead();
-            // }
-        // }
-    // }
-
     @Override
     public String toString() {
         return "Deer{" +
@@ -114,7 +96,7 @@ public class Deer extends Prey
         if (!night) {
             return true;
         }
-        else if (night && rand.nextDouble() < 0.25) {
+        else if (night && rand.nextDouble() < 0.3) {
             return true;
         }
         else {

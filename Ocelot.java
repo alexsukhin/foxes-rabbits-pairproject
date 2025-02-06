@@ -17,9 +17,9 @@ public class Ocelot extends Predator
     // The age to which a ocelot can live.
     private static final int MAX_AGE = 180;
     // The likelihood of a ocelot breeding.
-    private static final double BREEDING_PROBABILITY = 0.1;
+    private static final double BREEDING_PROBABILITY = 0.15;
     // The maximum number of births.
-    private static final int MAX_LITTER_SIZE = 4;
+    private static final int MAX_LITTER_SIZE = 5;
     // A shared random number generator to control breeding.
     private static final Random rand = Randomizer.getRandom();
     
