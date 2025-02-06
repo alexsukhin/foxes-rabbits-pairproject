@@ -8,7 +8,7 @@ import java.util.List;
  * @Aryan Sanvee Vijayan
  * @version 02/02/2025
  */
-public class Deer extends Prey
+public class Deer extends Prey implements TimeActive
 {
     // Characteristics shared by all deers (class variables).
     // The age at which a deer can start to breed.
@@ -40,6 +40,24 @@ public class Deer extends Prey
         age = 0;
         if(randomAge) {
             age = rand.nextInt(MAX_AGE);
+        }
+    }
+    
+    @Override
+    public void actAtTime(Field currentField, Field nextFieldState, boolean night) {
+        if (!night) {
+            // Deers are active at day; moving around
+            act(currentField, nextFieldState);
+        } else {
+            // Deers are not active during the night;
+            // at the night deers get absolutely devoured, should probably
+            // fix this issue!
+            incrementAge();
+            if (isAlive()) {
+                nextFieldState.placeAnimal(this, getLocation());
+            } else {
+                setDead();
+            }
         }
     }
 
