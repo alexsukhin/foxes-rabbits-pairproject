@@ -21,9 +21,9 @@ public class Armadillo extends Prey
     private static final int MAX_LITTER_SIZE = 5;
     // A shared random number generator to control breeding.
     private static final Random rand = Randomizer.getRandom();
-    
+
     // Individual characteristics (instance fields).
-    
+
     // The armadillo's age.
     private int age;
 
@@ -46,10 +46,10 @@ public class Armadillo extends Prey
     @Override
     public String toString() {
         return "Armadillo{" +
-                "age=" + age +
-                ", alive=" + isAlive() +
-                ", location=" + getLocation() +
-                '}';
+        "age=" + age +
+        ", alive=" + isAlive() +
+        ", location=" + getLocation() +
+        '}';
     }
 
     /**
@@ -63,7 +63,6 @@ public class Armadillo extends Prey
             setDead();
         }
     }
-    
 
     /**
      * A armadillo can breed successfully if it has reached the breeding age,
@@ -74,7 +73,7 @@ public class Armadillo extends Prey
     {
         return age >= BREEDING_AGE && rand.nextDouble() <= BREEDING_PROBABILITY;
     }
-    
+
     /**
      * Create a new armadillo as offspring.
      * @param loc The location off the new offspring.
@@ -84,12 +83,24 @@ public class Armadillo extends Prey
         Armadillo young = new Armadillo(false,loc);
         return young;
     }
-    
+
     /**
      * Generate number of offspring if breeding is successful.
      * @return Number of offspring.
      */
     protected int birthNumber() {
         return rand.nextInt(MAX_LITTER_SIZE) + 1;
+    }
+
+    protected boolean canMove(boolean night) {
+        if (!night) {
+            return true;
+        }
+        else if (night && rand.nextDouble() < 0.5) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 }

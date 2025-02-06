@@ -9,7 +9,7 @@ import java.util.Random;
  * @author David J. Barnes, Aryan Sanvee Vijayan and Michael Kölling
  * @version 02/02/2025
  */
-public class Ocelot extends Predator implements TimeActive
+public class Ocelot extends Predator
 {
     // Characteristics shared by all ocelotes (class variables).
     // The age at which a ocelot can start to breed.
@@ -23,6 +23,8 @@ public class Ocelot extends Predator implements TimeActive
     // A shared random number generator to control breeding.
     private static final Random rand = Randomizer.getRandom();
     
+    
+    private static final double NIGHT_HUNT_PROBABILITY = 0.25;
     // Individual characteristics (instance fields).
 
     // The ocelot's age.
@@ -46,19 +48,12 @@ public class Ocelot extends Predator implements TimeActive
         }
     }
     
-    @Override
-    public void actAtTime(Field currentField, Field nextFieldState, boolean night) {
+    public boolean huntSuccess(boolean night) {
         if (night) {
-            // Ocelots are active at night; hunting or moving around
-            act(currentField, nextFieldState);
-        } else {
-            // Ocelots are not active during the day;
-            incrementAge();
-            if (isAlive()) {
-                nextFieldState.placeAnimal(this, getLocation());
-            } else {
-                setDead();
-            }
+            return rand.nextDouble() >= NIGHT_HUNT_PROBABILITY;
+        } 
+        else {
+            return true;
         }
     }
 
@@ -124,4 +119,5 @@ public class Ocelot extends Predator implements TimeActive
     protected int birthNumber() {
         return rand.nextInt(MAX_LITTER_SIZE) + 1;
     }
+    
 }

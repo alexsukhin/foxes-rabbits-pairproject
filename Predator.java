@@ -45,7 +45,7 @@ public abstract class Predator extends Animal
      * @param currentField The field currently occupied.
      * @param nextFieldState The updated field.
      */
-    public void act(Field currentField, Field nextFieldState)
+    public void act(Field currentField, Field nextFieldState, boolean night)
     {
         incrementAge();
         incrementHunger();
@@ -56,7 +56,7 @@ public abstract class Predator extends Animal
                 giveBirth(nextFieldState, freeLocations);
             }
             // Move towards a source of food if found.
-            Location nextLocation = findFood(currentField);
+            Location nextLocation = findFood(currentField, night);
             if(nextLocation == null && ! freeLocations.isEmpty()) {
                 // No food found - try to move to a free location.
                 nextLocation = freeLocations.remove(0);
@@ -90,7 +90,7 @@ public abstract class Predator extends Animal
      * @param field The field currently occupied.
      * @return Where food was found, or null if it wasn't.
      */
-    private Location findFood(Field field)
+    private Location findFood(Field field, boolean night)
     {
         List<Location> adjacent = field.getAdjacentLocations(getLocation());
         Iterator<Location> it = adjacent.iterator();
@@ -98,7 +98,7 @@ public abstract class Predator extends Animal
         while(foodLocation == null && it.hasNext()) {
             Location loc = it.next();
             Animal animal = field.getAnimalAt(loc);
-            if(isPrey(animal)) {
+            if(isPrey(animal) && huntSuccess(night)) {
                 if(animal instanceof Armadillo armadillo) {
                     armadillo.setDead();
                     foodLevel = ARMADILLO_FOOD_VALUE;
@@ -190,4 +190,6 @@ public abstract class Predator extends Animal
      * @return Number of offspring.
      */
     abstract protected int birthNumber();
+    
+    abstract protected boolean huntSuccess(boolean isNight);
 }

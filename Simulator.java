@@ -25,7 +25,7 @@ public class Simulator
     // The probability that a jaguar will be created in any given position.
     private static final double JAGUAR_CREATION_PROBABILITY = 0.02;
     // The number of steps in one day/night cycle.
-    private static final int DAY_STEPS = 50;
+    private static final int DAY_STEPS = 20;
     // The current state of day/night.
     private boolean night = false;
 
@@ -100,11 +100,7 @@ public class Simulator
 
         List<Animal> animals = field.getAnimals();
         for (Animal anAnimal : animals) {
-            if (anAnimal instanceof TimeActive) {
-                ((TimeActive) anAnimal).actAtTime(field, nextFieldState, night);
-            } else {
-            anAnimal.act(field, nextFieldState);
-            }
+            anAnimal.act(field, nextFieldState, night);
         }
         
         // Replace the old state with the new one.

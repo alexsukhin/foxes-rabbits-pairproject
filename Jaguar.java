@@ -19,9 +19,10 @@ public class Jaguar extends Predator
     private static final double BREEDING_PROBABILITY = 0.075;
     // The maximum number of births.
     private static final int MAX_LITTER_SIZE = 3;
+    private static final double NIGHT_HUNT_PROBABILITY = 0.5;
     // A shared random number generator to control breeding.
     private static final Random rand = Randomizer.getRandom();
-    
+
     // Individual characteristics (instance fields).
 
     // The jaguar's age.
@@ -48,11 +49,11 @@ public class Jaguar extends Predator
     @Override
     public String toString() {
         return "Jaguar{" +
-                "age=" + age +
-                ", alive=" + isAlive() +
-                ", location=" + getLocation() +
-                ", foodLevel=" + getFoodLevel() +
-                '}';
+        "age=" + age +
+        ", alive=" + isAlive() +
+        ", location=" + getLocation() +
+        ", foodLevel=" + getFoodLevel() +
+        '}';
     }
 
     /**
@@ -65,16 +66,16 @@ public class Jaguar extends Predator
             setDead();
         }
     }
-    
+
     protected boolean isPrey(Animal animal) {
         if(animal instanceof Deer deer) {
-                return true;
+            return true;
         }
         else {
             return false;
         }
     }
-    
+
     /**
      * A jaguar can breed successfully if it has reached the breeding age,
      * and luck is on its side.
@@ -84,7 +85,7 @@ public class Jaguar extends Predator
     {
         return age >= BREEDING_AGE && rand.nextDouble() <= BREEDING_PROBABILITY;
     }
-    
+
     /**
      * Create a new jaguar as offspring.
      * @param loc The location off the new offspring.
@@ -94,12 +95,21 @@ public class Jaguar extends Predator
         Jaguar young = new Jaguar(false,loc);
         return young;
     }
-    
+
     /**
      * Generate number of offspring if breeding is successful.
      * @return Number of offspring.
      */
     protected int birthNumber() {
         return rand.nextInt(MAX_LITTER_SIZE) + 1;
+    }
+
+    public boolean huntSuccess(boolean night) {
+        if (night) {
+            return rand.nextDouble() >= NIGHT_HUNT_PROBABILITY;
+        } 
+        else {
+            return true;
+        }
     }
 }

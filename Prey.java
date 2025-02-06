@@ -23,7 +23,7 @@ public abstract class Prey extends Animal
      * @param currentField The field occupied.
      * @param nextFieldState The updated field.
      */
-    public void act(Field currentField, Field nextFieldState)
+    public void act(Field currentField, Field nextFieldState, boolean night)
     {
         incrementAge();
         if(isAlive()) {
@@ -33,11 +33,14 @@ public abstract class Prey extends Animal
                 giveBirth(nextFieldState, freeLocations);
             }
             // Try to move into a free location.
-            if(! freeLocations.isEmpty()) {
+            if(! freeLocations.isEmpty() && canMove(night)) {
                 Location nextLocation = freeLocations.get(0);
                 setLocation(nextLocation);
                 nextFieldState.placeAnimal(this, nextLocation);
-            }
+            } 
+            else if (! freeLocations.isEmpty()) {
+                nextFieldState.placeAnimal(this, getLocation());
+            } 
             else {
                 // Overcrowding.
                 setDead();
@@ -82,30 +85,32 @@ public abstract class Prey extends Animal
         }
         return births;
     }
-    
+
     /**
      * Increase the age.
      * This could result in the prey's death.
      */
     abstract protected void incrementAge();
-    
+
     /**
      * Create a new prey as offspring.
      * @param loc The location off the new offspring.
      * @return The offspring.
      */
     abstract protected Animal offspring(Location loc);
-    
+
     /**
      * A prey can breed successfully if it has reached the breeding age,
      * and luck is on its side.
      * @return true if the prey breeds successfully, false otherwise.
      */
     abstract protected boolean breedSuccess();
-    
+
     /**
      * Generate number of offspring if breeding is successful.
      * @return Number of offspring.
      */
     abstract protected int birthNumber();
+    
+    abstract protected boolean canMove(boolean night);
 }

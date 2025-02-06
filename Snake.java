@@ -18,6 +18,7 @@ public class Snake extends Predator
     private static final double BREEDING_PROBABILITY = 0.1;
     // The maximum number of births.
     private static final int MAX_LITTER_SIZE = 25;
+    private static final double NIGHT_HUNT_PROBABILITY = 0.25;
     // A shared random number generator to control breeding.
     private static final Random rand = Randomizer.getRandom();
     
@@ -104,5 +105,14 @@ public class Snake extends Predator
      */
     protected int birthNumber() {
         return rand.nextInt(MAX_LITTER_SIZE) + 1;
+    }
+    
+    public boolean huntSuccess(boolean night) {
+        if (night) {
+            return rand.nextDouble() >= NIGHT_HUNT_PROBABILITY;
+        } 
+        else {
+            return true;
+        }
     }
 }
