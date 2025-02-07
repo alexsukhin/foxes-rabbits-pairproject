@@ -2,17 +2,13 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * Common elements of foxes and rabbits.
+ * Common elements of predators and preys.
  *
  * @author David J. Barnes and Michael Kölling
  * @version 7.0
  */
-public abstract class Animal
+public abstract class Animal extends Organism
 {
-    // Whether the animal is alive or not.
-    private boolean alive;
-    // The animal's position.
-    private Location location;
     // Whether the animal is male or female.
     // True for female, false for male.
     private boolean female;
@@ -23,9 +19,8 @@ public abstract class Animal
      */
     public Animal(Location location)
     {
+        super(location);
         Random random = new Random();
-        this.alive = true;
-        this.location = location;
         this.female = random.nextBoolean();
     }
     
@@ -51,43 +46,7 @@ public abstract class Animal
         }
         return false;
     }
-    
-    /**
-     * Check whether the animal is alive or not.
-     * @return true if the animal is still alive.
-     */
-    public boolean isAlive()
-    {
-        return alive;
-    }
-
-    /**
-     * Indicate that the animal is no longer alive.
-     */
-    protected void setDead()
-    {
-        alive = false;
-        location = null;
-    }
-    
-    /**
-     * Return the animal's location.
-     * @return The animal's location.
-     */
-    public Location getLocation()
-    {
-        return location;
-    }
-    
-    /**
-     * Set the animal's location.
-     * @param location The new location.
-     */
-    protected void setLocation(Location location)
-    {
-        this.location = location;
-    }
-    
+ 
     /**
      * Check whether the animal is female or not.
      * @return true if the animal is female.
