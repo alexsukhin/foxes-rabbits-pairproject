@@ -23,7 +23,7 @@ public abstract class Prey extends Animal
      * @param currentField The field occupied.
      * @param nextFieldState The updated field.
      */
-    public void act(Field currentField, Field nextFieldState, boolean night)
+    public void act(Field currentField, Field nextFieldState, Time time)
     {
         incrementAge();
         if(isAlive()) {
@@ -33,7 +33,7 @@ public abstract class Prey extends Animal
                 giveBirth(nextFieldState, freeLocations);
             }
             // Try to move into a free location.
-            if(! freeLocations.isEmpty() && canMove(night)) {
+            if(! freeLocations.isEmpty() && canMove(time)) {
                 Location nextLocation = freeLocations.get(0);
                 setLocation(nextLocation);
                 nextFieldState.placeAnimal(this, nextLocation);
@@ -112,5 +112,5 @@ public abstract class Prey extends Animal
      */
     abstract protected int birthNumber();
     
-    abstract protected boolean canMove(boolean night);
+    abstract protected boolean canMove(Time time);
 }

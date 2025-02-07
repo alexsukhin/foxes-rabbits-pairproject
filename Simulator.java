@@ -27,7 +27,7 @@ public class Simulator
     // The number of steps in one day/night cycle.
     private static final int DAY_STEPS = 20;
     // The current state of day/night.
-    private boolean night = false;
+    private Time time;
 
     // The current state of the field.
     private Field field;
@@ -60,6 +60,7 @@ public class Simulator
         
         field = new Field(depth, width);
         view = new SimulatorView(depth, width);
+        time = Time.DAY;
 
         reset();
     }
@@ -88,7 +89,7 @@ public class Simulator
     }
     
     /**
-     * Run the simulation from its current state for a single step.
+     * Run the simulat qion from its current state for a single step.
      * Iterate over the whole field updating the state of each ocelot and armadillo.
      */
     public void simulateOneStep()
@@ -100,7 +101,7 @@ public class Simulator
 
         List<Animal> animals = field.getAnimals();
         for (Animal anAnimal : animals) {
-            anAnimal.act(field, nextFieldState, night);
+            anAnimal.act(field, nextFieldState, time);
         }
         
         // Replace the old state with the new one.
@@ -110,7 +111,7 @@ public class Simulator
         changeTime();
 
         reportStats();
-        view.showStatus(step, night, field);
+        view.showStatus(step, time, field);
     }
         
     /**
@@ -118,9 +119,10 @@ public class Simulator
      */
     public void reset()
     {
+        time = Time.DAY;
         step = 0;
         populate();
-        view.showStatus(step, night, field);
+        view.showStatus(step, time, field);
     }
     
     /**
@@ -192,7 +194,7 @@ public class Simulator
     private void changeTime()
     {
         if (step % DAY_STEPS == 0) {
-            night = !night;
+            time = (time == Time.DAY) ? Time.NIGHT : Time.DAY;
         }
     }
 }

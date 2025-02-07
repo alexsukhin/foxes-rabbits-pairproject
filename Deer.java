@@ -92,11 +92,11 @@ public class Deer extends Prey
         return rand.nextInt(MAX_LITTER_SIZE) + 1;
     }
     
-    protected boolean canMove(boolean night) {
-        if (!night) {
+    protected boolean canMove(Time time) {
+        if (time == Time.DAY) {
             return true;
         }
-        else if (night && rand.nextDouble() < 0.3) {
+        else if ((time == Time.NIGHT) && (rand.nextDouble() < 0.3)) {
             return true;
         }
         else {

@@ -48,8 +48,8 @@ public class Ocelot extends Predator
         }
     }
     
-    public boolean huntSuccess(boolean night) {
-        if (night) {
+    public boolean huntSuccess(Time time) {
+        if (time == Time.NIGHT) {
             return rand.nextDouble() >= NIGHT_HUNT_PROBABILITY;
         } 
         else {

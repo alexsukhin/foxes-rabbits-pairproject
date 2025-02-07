@@ -95,16 +95,16 @@ public class SimulatorView extends JFrame
      * @param step Which iteration step it is.
      * @param field The field whose status is to be displayed.
      */
-    public void showStatus(int step, boolean night, Field field)
+    public void showStatus(int step, Time time, Field field)
     {
         if(!isVisible()) {
             setVisible(true);
         }
 
         
-        if (night) {
+        if (time == Time.NIGHT) {
             northLabel.setText(STEP_PREFIX + step + " " + TIME_PREFIX + "night");
-        } else {
+        } else if (time == Time.DAY) {
             northLabel.setText(STEP_PREFIX + step + " " + TIME_PREFIX + "day");
         }
         stats.reset();

@@ -107,8 +107,8 @@ public class Snake extends Predator
         return rand.nextInt(MAX_LITTER_SIZE) + 1;
     }
     
-    public boolean huntSuccess(boolean night) {
-        if (night) {
+    public boolean huntSuccess(Time time) {
+        if (time == Time.NIGHT) {
             return rand.nextDouble() >= NIGHT_HUNT_PROBABILITY;
         } 
         else {
