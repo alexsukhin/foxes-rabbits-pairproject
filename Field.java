@@ -14,13 +14,15 @@ public class Field
     
     // The dimensions of the field.
     private final int depth, width;
-    // Animals mapped by location.
-    private final Map<Location, Animal> field = new HashMap<>();
+    // Each location holds a pair of Animal, Plant.
+    private final Map<Location, Pair<Animal, Plant>> field = new HashMap<>();
     // The animals.
     private final List<Animal> animals = new ArrayList<>();
+    // The plants.
+    private final List<Plant> plants = new ArrayList<>();
 
     /**
-     * Represent a field of the given dimensions.
+     * Represent a field of the given dimensions.   
      * @param depth The depth of the field.
      * @param width The width of the field.
      */
@@ -40,12 +42,31 @@ public class Field
     public void placeAnimal(Animal anAnimal, Location location)
     {
         assert location != null;
-        Object other = field.get(location);
-        if(other != null) {
-            animals.remove(other);
+        
+        Pair<Animal, Plant> existingPair = field.getOrDefault(location, new Pair<>(null, null));
+            
+        if (existingPair.first() != null) {
+            animals.remove(existingPair.first());
         }
-        field.put(location, anAnimal);
+        
+        Pair<Animal, Plant> newPair = new Pair<>(anAnimal, existingPair.second());
+        field.put(location, newPair);
         animals.add(anAnimal);
+    }
+    
+    public void placePlant(Plant plant, Location location)
+    {
+        assert location != null;
+            
+        Pair<Animal, Plant> existingPair = field.getOrDefault(location, new Pair<>(null, null));
+            
+        if (existingPair.second() != null) {
+            plants.remove(existingPair.second());
+        }
+        
+        Pair<Animal, Plant> newPair = new Pair<>(existingPair.first(), plant);
+        field.put(location, newPair);
+        plants.add(plant);
     }
     
     /**
@@ -54,8 +75,18 @@ public class Field
      * @return The animal at the given location, or null if there is none.
      */
     public Animal getAnimalAt(Location location)
+    {   
+        return field.containsKey(location) ? field.get(location).first() : null;
+    }
+    
+    /**
+     * Return the plant at the given location, if any.
+     * @param location Where in the field.
+     * @return The plant at the given location, or null if there is none.
+     */
+    public Plant getPlantAt(Location location)
     {
-        return field.get(location);
+        return field.containsKey(location) ? field.get(location).second() : null;
     }
 
     /**
@@ -68,18 +99,22 @@ public class Field
         List<Location> free = new LinkedList<>();
         List<Location> adjacent = getAdjacentLocations(location);
         for(Location next : adjacent) {
-            Animal anAnimal = field.get(next);
-            if(anAnimal == null) {
+            
+            Pair<Animal, Plant> existingPair = field.get(next);
+            
+            if (existingPair == null) {
                 free.add(next);
-            }
-            else if(!anAnimal.isAlive()) {
-                free.add(next);
+            } else {
+                Animal anAnimal = existingPair.first();
+                if (anAnimal == null || !anAnimal.isAlive()) {
+                    free.add(next);
+                }
             }
         }
         return free;
     }
 
-    /**
+    /** 
      * Return a shuffled list of locations adjacent to the given one.
      * The list will not include the location itself.
      * All locations will lie within the grid.
@@ -120,7 +155,10 @@ public class Field
     {
         int numOcelotes = 0, numArmadillos = 0, numDeers = 0, 
         numSnakes = 0, numWolves = 0;
-        for(Animal anAnimal : field.values()) {
+        for(Pair<Animal, Plant> pair : field.values()) {
+            
+            Animal anAnimal = pair.first();
+            
             if(anAnimal instanceof Ocelot ocelot) {
                 if(ocelot.isAlive()) {
                     numOcelotes++;
@@ -213,13 +251,21 @@ public class Field
     {
         return animals;
     }
+    
+    /**
+     * Get the list of plants.
+     */
+    public List<Plant> getPlants()
+    {
+        return plants;
+    }
 
     /**
      * Return the depth of the field.
      * @return The depth of the field.
      */
     public int getDepth()
-    {
+    {   
         return depth;
     }
     

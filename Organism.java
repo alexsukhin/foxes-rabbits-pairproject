@@ -31,7 +31,7 @@ public abstract class Organism
     }
     
     /**
-     * Indicate that the organism is no longer alive.
+     * Indicate that the organism is no longer alive.   
      */
     protected void setDead()
     {
