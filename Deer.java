@@ -96,7 +96,7 @@ public class Deer extends Prey
         if (time == Time.DAY) {
             return true;
         }
-        else if ((time == Time.NIGHT) && (rand.nextDouble() < 0.3)) {
+        else if ((time == Time.NIGHT) && (rand.nextDouble() < 0.6)) {
             return true;
         }
         else {

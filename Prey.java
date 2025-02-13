@@ -1,6 +1,6 @@
 import java.util.List;
+import java.util.Iterator;
 import java.util.Random;
-
 /**
  * A general model of a prey in the simulation.
  *
@@ -9,8 +9,16 @@ import java.util.Random;
  */
 public abstract class Prey extends Animal
 {
+    // Represents whether the prey is full or hungry.
+    private boolean isFull;
+    // Tracks how long the prey has been hungry or full (in steps).
+    private int hungerTimer;
+    // The number of steps before the prey goes hungry.
+    private static final int FULL_STEPS = 10;
+    // The number of steps before the prey dies of hunger.
+    private static final int HUNGRY_STEPS = 20;
     private static final Random rand = Randomizer.getRandom();
-
+    
     /**
      * Constructor for objects of class Prey
      */
@@ -18,6 +26,8 @@ public abstract class Prey extends Animal
     {
         // initialise instance variables
         super(location);
+        isFull = true;
+        hungerTimer = 0;
     }
 
     /**
@@ -30,25 +40,39 @@ public abstract class Prey extends Animal
     {
         incrementAge();
         if(isAlive()) {
-            List<Location> freeLocations = 
-                nextFieldState.getFreeAdjacentLocations(getLocation());
+            incrementHunger();
+            
+            List<Location> freeLocations = nextFieldState.getFreeAdjacentLocations(getLocation());
             checkIfInfected(nextFieldState); 
-
+            
             if (isInfected() && rand.nextDouble() < 0.5) {
                 setDead();
             }
-            else if (canAct(weather)){
+            else if canAct(weather) {
                 if(!freeLocations.isEmpty()) {
                     giveBirth(nextFieldState, freeLocations);
                 }
+
+                Location nextLocation = null;
+
+                if (!isFull) {
+                    Location plantLocation = findFood(currentField, time);
+                    if (plantLocation != null) {
+                        nextLocation = plantLocation;
+                    }
+                }
+
                 // Try to move into a free location.
-                if(! freeLocations.isEmpty() && canMove(time)) {
-                    Location nextLocation = freeLocations.get(0);
+                if(nextLocation == null && !freeLocations.isEmpty() && canMove(time)) {
+                    nextLocation = freeLocations.get(0);
+                } 
+                else if (!freeLocations.isEmpty()) {
+                    nextLocation = getLocation();
+                } 
+
+                if (nextLocation != null) {
                     setLocation(nextLocation);
                     nextFieldState.placeAnimal(this, nextLocation);
-                } 
-                else if (! freeLocations.isEmpty()) {
-                    nextFieldState.placeAnimal(this, getLocation());
                 } 
                 else {
                     // Overcrowding.
@@ -59,6 +83,52 @@ public abstract class Prey extends Animal
                 nextFieldState.placeAnimal(this, getLocation());
             }
         }
+    }
+   
+    
+    /**
+     * Make this prey more hungry. This could result in the prey's death.
+     * After eating, the prey will be full for FULL_STEPS steps.
+     */
+    private void incrementHunger()
+    {
+        if (isFull) {
+            hungerTimer++;
+            if (hungerTimer >= FULL_STEPS) {
+                isFull = false;
+                hungerTimer = 0;
+            }
+        } else {
+            hungerTimer++;
+            if (hungerTimer >= HUNGRY_STEPS) {
+                setDead();
+                hungerTimer = 0;
+            }
+        }
+    }
+    
+    /**
+     * Look for plants adjacent to the current location.
+     * Only the first live plant is eaten.
+     * @param field The field currently occupied.
+     * @return Where food was found, or null if it wasn't.
+     */
+    private Location findFood(Field field, Time time)
+    {
+        List<Location> adjacent = field.getAdjacentLocations(getLocation());
+        Iterator<Location> it = adjacent.iterator();
+        Location foodLocation = null;
+        while(foodLocation == null && it.hasNext()) {
+            Location loc = it.next();
+            Plant plant = field.getPlantAt(loc);
+            if (plant instanceof LeafCell leafCell) {
+                leafCell.removePlant();
+                hungerTimer = 0;
+                isFull = true;
+
+            }
+        }
+        return foodLocation;
     }
 
     /**
