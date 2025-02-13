@@ -1,9 +1,10 @@
 
 /**
- * Write a description of class Plant here.
+ * This class represents an abstraction of core plants
+ * and leaf plants.
  *
- * @author (your name)
- * @version (a version number or a date)
+ * @author Alexander Sukhin
+ * @version 13/02/2025
  */
 public abstract class Plant extends Organism
 {
@@ -21,4 +22,5 @@ public abstract class Plant extends Organism
      * @param nextFieldState The new state being built.
      */
     abstract public void act(Field currentField, Field nextFieldState);
+    
 }

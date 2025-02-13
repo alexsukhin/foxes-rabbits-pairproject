@@ -2,7 +2,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Write a description of class Plant here.
+ * This class represents the centre of each plant,
+ * handling the logic between growing through a list
+ * of leaf cells.   
  *
  * @author Alexander Sukhin
  * @version 11/02/2025
@@ -10,10 +12,13 @@ import java.util.List;
 public class CorePlant extends Plant
 {
     
+    // The current age of the plant.
     private int age;
+    // The current phase of the plant.
     private int phase;
+    // The leaf cells extending from the plant.
     private List<LeafCell> leafCells;
-    // The age to which a plant can live.
+    // The ages at which the plant evolves into different phases.
     private static final int PHASE_2_AGE = 10;
     private static final int PHASE_3_AGE = 30;
     
@@ -28,28 +33,52 @@ public class CorePlant extends Plant
         phase = 1;
     }
     
-    /**
-     * This increments the plants age.
+    /** 
+     * This is what the plant does most of the time. It increments
+     * the age and goes to next phase when plant is old enough.
      * @param currentField The field currently occupied.
      * @param nextFieldState The updated field.
      */
     public void act(Field currentField, Field nextFieldState)
     {
-        incrementAge();
-        if (isAlive()) {            
-            
-            if (age == PHASE_2_AGE) {
-                changePhase(2);
-                handleGrowth(currentField, nextFieldState);
-            } else if (age == PHASE_3_AGE) {
-                changePhase(3);
-                handleGrowth(currentField, nextFieldState);
-            }
-                
-            nextFieldState.placePlant(this, getLocation());
+        
+        // We reset the plant whenever there are no more
+        // leaf cells, i.e. prey ate the entire plant.
+        if (age >= 10 && leafCells.isEmpty()) {
+            resetPlant();
         }
+        
+        incrementAge();
+        
+        if (age == PHASE_2_AGE) {
+            changePhase(2);
+            handleGrowth(currentField, nextFieldState);
+        } else if (age == PHASE_3_AGE) {
+            changePhase(3);
+            handleGrowth(currentField, nextFieldState);
+        }
+            
+        nextFieldState.placePlant(this, getLocation());
     }
     
+    
+    /**
+     * This method resets the plant back to the first phase
+     * and resets the age of the plant, allowing us to regrow.
+     */
+    private void resetPlant()
+    {
+        age = 0;
+        phase = 1;
+    }
+    
+    /** 
+     * This method handles the growth of the plant when the plant
+     * goes to the next phase. It updates the plant to a 2x2 area
+     * or a 3x3 area depending on the current phase.
+     * @param currentField The field currently occupied.
+     * @param nextFieldState The updated field.
+     */
     private void handleGrowth(Field currentField, Field nextFieldState)
     {
         int row = getLocation().row();
@@ -75,6 +104,14 @@ public class CorePlant extends Plant
     }
     
     /**
+     * Removes a leaf cell plant from the list containing
+     * all leaf cells within the plant.
+     */
+    public void removeLeafCell(LeafCell leafCell) {
+        leafCells.remove(leafCell);
+    }
+    
+    /**
      * Increase the age.
      */
     private void incrementAge()
@@ -82,6 +119,10 @@ public class CorePlant extends Plant
         age++;
     }
     
+    /**
+     * Changes the phase of the plant.
+     * @param phase The phase which the plant must be updated to.
+     */
     private void changePhase(int phase)
     {
         if (phase == 2 || phase == 3) {
@@ -97,7 +138,7 @@ public class CorePlant extends Plant
      * @param nextFieldState The updated field.
      */
     private void addLeafCell(Location location, Field nextFieldState) {
-        LeafCell newLeafCell = new LeafCell(location);
+        LeafCell newLeafCell = new LeafCell(location, this);
         nextFieldState.placePlant(newLeafCell, location);
         leafCells.add(newLeafCell);
     }

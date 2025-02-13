@@ -54,6 +54,13 @@ public class Field
         animals.add(anAnimal);
     }
     
+    /**
+     * Place a plant at the given location.
+     * If there is already a plant at the location it will
+     * be lost.
+     * @param plant The plant to be placed.
+     * @param location Where to place the plant.
+     */
     public void placePlant(Plant plant, Location location)
     {
         assert location != null;
