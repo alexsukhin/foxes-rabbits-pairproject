@@ -17,9 +17,9 @@ public class Simulator
     // The probability that a ocelot will be created in any given grid position.
     private static final double OCELOT_CREATION_PROBABILITY = 0.02;
     // The probability that a armadillo will be created in any given position.
-    private static final double ARMADILLO_CREATION_PROBABILITY = 0.04;    
+    private static final double ARMADILLO_CREATION_PROBABILITY = 0.05;    
     // The probability that a deer will be created in any given position.
-    private static final double DEER_CREATION_PROBABILITY = 0.04;
+    private static final double DEER_CREATION_PROBABILITY = 0.05;
     // The probability that a snake will be created in any given position.
     private static final double SNAKE_CREATION_PROBABILITY = 0.02;
     // The probability that a jaguar will be created in any given position.
