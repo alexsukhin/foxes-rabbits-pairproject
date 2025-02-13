@@ -1,70 +1,112 @@
-    import java.util.*;
-    
+import java.util.*;
+
+/**
+ * A simple predator-prey simulator, based on a rectangular field containing 
+ * prey and predators.
+ *  
+ * @author David J. Barnes, Aryan Sanvee Vijayan and Michael Kölling
+ * @version 02/02/2025
+ */
+public class Simulator
+{
+    // Constants representing configuration information for the simulation.
+    // The default width for the grid.
+    private static final int DEFAULT_WIDTH = 150;
+    // The default depth of the grid.
+    private static final int DEFAULT_DEPTH = 100;
+    // The probability that a ocelot will be created in any given grid position.
+    private static final double OCELOT_CREATION_PROBABILITY = 0.02;
+    // The probability that a armadillo will be created in any given position.
+    private static final double ARMADILLO_CREATION_PROBABILITY = 0.04;    
+    // The probability that a deer will be created in any given position.
+    private static final double DEER_CREATION_PROBABILITY = 0.04;
+    // The probability that a snake will be created in any given position.
+    private static final double SNAKE_CREATION_PROBABILITY = 0.02;
+    // The probability that a jaguar will be created in any given position.
+    private static final double JAGUAR_CREATION_PROBABILITY = 0.01;
+    // The probability that a plant will be created in any given position
+    private static final double PLANT_CREATION_PROBABILITY = 0.02;
+    // The number of steps in one day/night cycle.
+    private static final int DAY_STEPS = 20;
+    // The number of steps in one weather cycle.
+    private static final int WEATHER_STEPS = 40;
+    // The current state of day/night.
+    private Time time;
+    // The current state of weather.
+    private Weather weather;
+
+    // The current state of the field.
+    private Field field;
+    // The current step of the simulation.
+    private int step;
+    // A graphical view of the simulation.
+    private final SimulatorView view;
+
     /**
-     * A simple predator-prey simulator, based on a rectangular field containing 
-     * rabbits and ocelotes.
-     *  
-     * @author David J. Barnes, Aryan Sanvee Vijayan and Michael Kölling
-     * @version 02/02/2025
+     * Construct a simulation field with default size.
      */
-    public class Simulator
+    public Simulator()
     {
-        // Constants representing configuration information for the simulation.
-        // The default width for the grid.
-        private static final int DEFAULT_WIDTH = 150;
-        // The default depth of the grid.
-        private static final int DEFAULT_DEPTH = 100;
-        // The probability that a ocelot will be created in any given grid position.
-        private static final double OCELOT_CREATION_PROBABILITY = 0.02;
-        // The probability that a armadillo will be created in any given position.
-        private static final double ARMADILLO_CREATION_PROBABILITY = 0.1;    
-        // The probability that a deer will be created in any given position.
-        private static final double DEER_CREATION_PROBABILITY = 0.1;
-        // The probability that a snake will be created in any given position.
-        private static final double SNAKE_CREATION_PROBABILITY = 0.02;
-        // The probability that a jaguar will be created in any given position.
-        private static final double JAGUAR_CREATION_PROBABILITY = 0.02;
-        // The probability that a plant will be created in any given position
-        private static final double PLANT_CREATION_PROBABILITY = 0.02;
-        // The number of steps in one day/night cycle.
-        private static final int DAY_STEPS = 20;
-        // The current state of day/night.
-        private Time time;
-    
-        // The current state of the field.
-        private Field field;
-        // The current step of the simulation.
-        private int step;
-        // A graphical view of the simulation.
-        private final SimulatorView view;
-    
-        /**
-         * Construct a simulation field with default size.
-         */
-        public Simulator()
-        {
-            this(DEFAULT_DEPTH, DEFAULT_WIDTH);
+        this(DEFAULT_DEPTH, DEFAULT_WIDTH);
+    }
+  
+    public Simulator(int depth, int width)
+    {
+        if(width <= 0 || depth <= 0) {
+            System.out.println("The dimensions must be >= zero.");
+            System.out.println("Using default values.");
+            depth = DEFAULT_DEPTH;
+            width = DEFAULT_WIDTH;
         }
         
-        /**
-         * Create a simulation field with the given size.
-         * @param depth Depth of the field. Must be greater than zero.
-         * @param width Width of the field. Must be greater than zero.
-         */
-        public Simulator(int depth, int width)
-        {
-            if(width <= 0 || depth <= 0) {
-                System.out.println("The dimensions must be >= zero.");
-                System.out.println("Using default values.");
-                depth = DEFAULT_DEPTH;
-                width = DEFAULT_WIDTH;
-            }
-            
-            field = new Field(depth, width);
-            view = new SimulatorView(depth, width);
-            time = Time.DAY;
+        field = new Field(depth, width);
+        view = new SimulatorView(depth, width);
+        time = Time.DAY;
+        weather = Weather.CLEAR;
+
+        reset();
+    }
     
-            reset();
+    /**
+     * Run the simulation from its current state for a reasonably long 
+     * period (700 steps).
+     */
+    public void runLongSimulation()
+    {
+        simulate(700);
+    }
+  
+    /**
+     * Run the simulation from its current state for a single step.
+     * Iterate over the whole field updating the state of each ocelot and armadillo.
+     */
+    public void simulateOneStep()
+    {
+        step++;
+        // Use a separate Field to store the starting state of
+        // the next step.
+        Field nextFieldState = new Field(field.getDepth(), field.getWidth());
+
+        List<Animal> animals = field.getAnimals();
+        for (Animal anAnimal : animals) {
+            anAnimal.act(field, nextFieldState, time, weather);
+          
+        List<Plant> plants = field.getPlants();
+            for (Plant plant : plants) {
+               plant.act(field, nextFieldState);
+            }
+         
+        // Replace the old state with the new one.
+        field = nextFieldState;
+          
+        // Changes the day/time cycle every 20 steps.
+        changeTime();
+        
+        // Changes the weather cycle every 10 steps.
+        changeWeather();
+
+        reportStats();
+        view.showStatus(step, time, field, weather);
         }
         
         /**
@@ -76,6 +118,7 @@
             simulate(700);
         }
         
+
         /**
          * Run the simulation for the given number of steps.
          * Stop before the given number of steps if it ceases to be viable.
@@ -90,50 +133,17 @@
             }
         }
         
-        /**
-         * Run the simulat qion from its current state for a single step.
-         * Iterate over the whole field updating the state of each ocelot and armadillo.
-         */
-        public void simulateOneStep()
-        {
-            step++;
-            // Use a separate Field to store the starting state of
-            // the next step.
-            Field nextFieldState = new Field(field.getDepth(), field.getWidth());
-    
-            List<Animal> animals = field.getAnimals();
-            for (Animal anAnimal : animals) {
-                anAnimal.act(field, nextFieldState, time);
-            }
-            
-            List<Plant> plants = field.getPlants();
-            for (Plant plant : plants) {
-               plant.act(field, nextFieldState);
-            }
-            
-            // Replace the old state with the new one.
-            field = nextFieldState;
-            
-            // Changes the day/time cycle every 50 steps.
-            changeTime();
-    
-            reportStats();
-            view.showStatus(step, time, field);
-            
-            // some chance of a plant spawning here...
-        }
-            
-        /**
-         * Reset the simulation to a starting position.
-         */
-        public void reset()
-        {
-            time = Time.DAY;
-            step = 0;
-            populate();
-            view.showStatus(step, time, field);
-        }
-        
+    /**
+     * Reset the simulation to a starting position.
+     */
+    public void reset()
+    {
+        time = Time.DAY;
+        step = 0;
+        populate();
+        view.showStatus(step, time, field, weather);
+    }
+ 
         /**
          * Randomly populate the field with ocelotes and armadillos.
          */
@@ -212,3 +222,15 @@
             }
         }
     }
+    
+    /**
+     * Every step cycle, checks whether we are on the 10th multiple step.
+     * If we are, changes weather cycle via flag.
+     */
+    private void changeWeather()
+    {
+        if (step % WEATHER_STEPS == 0) {
+            weather = Weather.randomWeather();
+        }
+    }
+}

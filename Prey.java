@@ -1,6 +1,6 @@
 import java.util.List;
 import java.util.Iterator;
-
+import java.util.Random;
 /**
  * A general model of a prey in the simulation.
  *
@@ -17,6 +17,7 @@ public abstract class Prey extends Animal
     private static final int FULL_STEPS = 10;
     // The number of steps before the prey dies of hunger.
     private static final int HUNGRY_STEPS = 20;
+    private static final Random rand = Randomizer.getRandom();
     
     /**
      * Constructor for objects of class Prey
@@ -35,44 +36,55 @@ public abstract class Prey extends Animal
      * @param currentField The field occupied.
      * @param nextFieldState The updated field.
      */
-    public void act(Field currentField, Field nextFieldState, Time time)
+    public void act(Field currentField, Field nextFieldState, Time time, Weather weather)
     {
         incrementAge();
         if(isAlive()) {
             incrementHunger();
             
             List<Location> freeLocations = nextFieldState.getFreeAdjacentLocations(getLocation());
+            checkIfInfected(nextFieldState); 
             
-            
-            if(!freeLocations.isEmpty()) {
-                giveBirth(nextFieldState, freeLocations);
+            if (isInfected() && rand.nextDouble() < 0.5) {
+                setDead();
             }
-            
-            Location nextLocation = null;
-            
-            if (!isFull) {
-                Location plantLocation = findFood(currentField, time);
-                if (plantLocation != null) {
-                    nextLocation = plantLocation;
+            else if canAct(weather) {
+                if(!freeLocations.isEmpty()) {
+                    giveBirth(nextFieldState, freeLocations);
+                }
+
+                Location nextLocation = null;
+
+                if (!isFull) {
+                    Location plantLocation = findFood(currentField, time);
+                    if (plantLocation != null) {
+                        nextLocation = plantLocation;
+                    }
+                }
+
+                // Try to move into a free location.
+                if(nextLocation == null && !freeLocations.isEmpty() && canMove(time)) {
+                    nextLocation = freeLocations.get(0);
+                } 
+                else if (!freeLocations.isEmpty()) {
+                    nextLocation = getLocation();
+                } 
+
+                if (nextLocation != null) {
+                    setLocation(nextLocation);
+                    nextFieldState.placeAnimal(this, nextLocation);
+                } 
+                else {
+                    // Overcrowding.
+                    setDead();
                 }
             }
-
-            // Try to move into a free location.
-            if(nextLocation == null && !freeLocations.isEmpty() && canMove(time)) {
-                nextLocation = freeLocations.get(0);
-            } 
-            else if (!freeLocations.isEmpty()) {
-                nextLocation = getLocation();
-            } 
-            
-            if (nextLocation != null) {
-                setLocation(nextLocation);
-                nextFieldState.placeAnimal(this, nextLocation);
-            } else {
-                setDead();
+            else {
+                nextFieldState.placeAnimal(this, getLocation());
             }
         }
     }
+   
     
     /**
      * Make this prey more hungry. This could result in the prey's death.
@@ -113,6 +125,7 @@ public abstract class Prey extends Animal
                 leafCell.removePlant();
                 hungerTimer = 0;
                 isFull = true;
+
             }
         }
         return foodLocation;
@@ -181,6 +194,6 @@ public abstract class Prey extends Animal
      * @return Number of offspring.
      */
     abstract protected int birthNumber();
-    
+
     abstract protected boolean canMove(Time time);
 }

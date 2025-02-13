@@ -13,6 +13,8 @@ public class FieldStats
 {
     // Counters for each type of entity (fox, rabbit, etc.) in the simulation.
     private final Map<Class<?>, Counter> counters;
+    // Counter for total number of infected animals.
+    private int infectedCount;
     // Whether the counters are currently up to date.
     private boolean countsValid;
 
@@ -25,6 +27,7 @@ public class FieldStats
         // we might find
         counters = new HashMap<>();
         countsValid = true;
+        infectedCount = 0;
     }
 
     /**
@@ -44,6 +47,8 @@ public class FieldStats
                    .append(info.getCount())
                    .append(' ');
         }
+        details.append("Infected: ");
+        details.append(field.infectedCount());
         return details.toString();
     }
     
