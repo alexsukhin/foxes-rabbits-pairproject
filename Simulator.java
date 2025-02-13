@@ -2,7 +2,7 @@ import java.util.*;
 
 /**
  * A simple predator-prey simulator, based on a rectangular field containing 
- * rabbits and ocelotes.
+ * prey and predators.
  *  
  * @author David J. Barnes, Aryan Sanvee Vijayan and Michael Kölling
  * @version 02/02/2025
@@ -17,17 +17,21 @@ public class Simulator
     // The probability that a ocelot will be created in any given grid position.
     private static final double OCELOT_CREATION_PROBABILITY = 0.02;
     // The probability that a armadillo will be created in any given position.
-    private static final double ARMADILLO_CREATION_PROBABILITY = 0.1;    
+    private static final double ARMADILLO_CREATION_PROBABILITY = 0.04;    
     // The probability that a deer will be created in any given position.
-    private static final double DEER_CREATION_PROBABILITY = 0.1;
+    private static final double DEER_CREATION_PROBABILITY = 0.04;
     // The probability that a snake will be created in any given position.
     private static final double SNAKE_CREATION_PROBABILITY = 0.02;
     // The probability that a jaguar will be created in any given position.
-    private static final double JAGUAR_CREATION_PROBABILITY = 0.02;
+    private static final double JAGUAR_CREATION_PROBABILITY = 0.01;
     // The number of steps in one day/night cycle.
     private static final int DAY_STEPS = 20;
+    // The number of steps in one weather cycle.
+    private static final int WEATHER_STEPS = 40;
     // The current state of day/night.
     private Time time;
+    // The current state of weather.
+    private Weather weather;
 
     // The current state of the field.
     private Field field;
@@ -61,13 +65,14 @@ public class Simulator
         field = new Field(depth, width);
         view = new SimulatorView(depth, width);
         time = Time.DAY;
+        weather = Weather.CLEAR;
 
         reset();
     }
     
     /**
      * Run the simulation from its current state for a reasonably long 
-     * period (4000 steps).
+     * period (700 steps).
      */
     public void runLongSimulation()
     {
@@ -101,17 +106,20 @@ public class Simulator
 
         List<Animal> animals = field.getAnimals();
         for (Animal anAnimal : animals) {
-            anAnimal.act(field, nextFieldState, time);
+            anAnimal.act(field, nextFieldState, time, weather);
         }
         
         // Replace the old state with the new one.
         field = nextFieldState;
         
-        // Changes the day/time cycle every 50 steps.
+        // Changes the day/time cycle every 20 steps.
         changeTime();
+        
+        // Changes the weather cycle every 10 steps.
+        changeWeather();
 
         reportStats();
-        view.showStatus(step, time, field);
+        view.showStatus(step, time, field, weather);
     }
         
     /**
@@ -122,7 +130,7 @@ public class Simulator
         time = Time.DAY;
         step = 0;
         populate();
-        view.showStatus(step, time, field);
+        view.showStatus(step, time, field, weather);
     }
     
     /**
@@ -188,13 +196,24 @@ public class Simulator
     }
     
     /**
-     * Every step cycle, checks whether we are on the 50th multiple step.
+     * Every step cycle, checks whether we are on the 20th multiple step.
      * If we are, changes day/night cycle via flag.
      */
     private void changeTime()
     {
         if (step % DAY_STEPS == 0) {
             time = (time == Time.DAY) ? Time.NIGHT : Time.DAY;
+        }
+    }
+    
+    /**
+     * Every step cycle, checks whether we are on the 10th multiple step.
+     * If we are, changes weather cycle via flag.
+     */
+    private void changeWeather()
+    {
+        if (step % WEATHER_STEPS == 0) {
+            weather = Weather.randomWeather();
         }
     }
 }

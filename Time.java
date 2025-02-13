@@ -7,5 +7,25 @@
  */
 public enum Time
 {
-    DAY, NIGHT
+    DAY("day"), 
+    NIGHT("night");
+    
+    private String nameString;
+    
+    /**
+     * Initialise with the corresponding string.
+     * @param nameString The name string.
+     */
+    Time(String nameString)
+    {
+        this.nameString = nameString;
+    }
+
+    /**
+     * @return The name word as a string.
+     */
+    public String toString()
+    {
+        return nameString;
+    }
 }

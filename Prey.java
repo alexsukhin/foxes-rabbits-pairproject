@@ -1,4 +1,5 @@
 import java.util.List;
+import java.util.Random;
 
 /**
  * A general model of a prey in the simulation.
@@ -8,6 +9,8 @@ import java.util.List;
  */
 public abstract class Prey extends Animal
 {
+    private static final Random rand = Randomizer.getRandom();
+
     /**
      * Constructor for objects of class Prey
      */
@@ -23,27 +26,37 @@ public abstract class Prey extends Animal
      * @param currentField The field occupied.
      * @param nextFieldState The updated field.
      */
-    public void act(Field currentField, Field nextFieldState, Time time)
+    public void act(Field currentField, Field nextFieldState, Time time, Weather weather)
     {
         incrementAge();
         if(isAlive()) {
             List<Location> freeLocations = 
                 nextFieldState.getFreeAdjacentLocations(getLocation());
-            if(!freeLocations.isEmpty()) {
-                giveBirth(nextFieldState, freeLocations);
-            }
-            // Try to move into a free location.
-            if(! freeLocations.isEmpty() && canMove(time)) {
-                Location nextLocation = freeLocations.get(0);
-                setLocation(nextLocation);
-                nextFieldState.placeAnimal(this, nextLocation);
-            } 
-            else if (! freeLocations.isEmpty()) {
-                nextFieldState.placeAnimal(this, getLocation());
-            } 
-            else {
-                // Overcrowding.
+            checkIfInfected(nextFieldState); 
+
+            if (isInfected() && rand.nextDouble() < 0.5) {
                 setDead();
+            }
+            else if (canAct(weather)){
+                if(!freeLocations.isEmpty()) {
+                    giveBirth(nextFieldState, freeLocations);
+                }
+                // Try to move into a free location.
+                if(! freeLocations.isEmpty() && canMove(time)) {
+                    Location nextLocation = freeLocations.get(0);
+                    setLocation(nextLocation);
+                    nextFieldState.placeAnimal(this, nextLocation);
+                } 
+                else if (! freeLocations.isEmpty()) {
+                    nextFieldState.placeAnimal(this, getLocation());
+                } 
+                else {
+                    // Overcrowding.
+                    setDead();
+                }
+            }
+            else {
+                nextFieldState.placeAnimal(this, getLocation());
             }
         }
     }
@@ -111,6 +124,6 @@ public abstract class Prey extends Animal
      * @return Number of offspring.
      */
     abstract protected int birthNumber();
-    
+
     abstract protected boolean canMove(Time time);
 }

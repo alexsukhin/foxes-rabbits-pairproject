@@ -15,9 +15,9 @@ public class Snake extends Predator
     // The age to which a snake can live.
     private static final int MAX_AGE = 200;
     // The likelihood of a snake breeding.
-    private static final double BREEDING_PROBABILITY = 0.12;
+    private static final double BREEDING_PROBABILITY = 0.15;
     // The maximum number of births.
-    private static final int MAX_LITTER_SIZE = 25;
+    private static final int MAX_LITTER_SIZE = 30;
     private static final double NIGHT_HUNT_PROBABILITY = 0.25;
     // A shared random number generator to control breeding.
     private static final Random rand = Randomizer.getRandom();

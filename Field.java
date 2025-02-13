@@ -11,7 +11,7 @@ public class Field
 {
     // A random number generator for providing random locations.
     private static final Random rand = Randomizer.getRandom();
-    
+
     // The dimensions of the field.
     private final int depth, width;
     // Animals mapped by location.
@@ -47,7 +47,7 @@ public class Field
         field.put(location, anAnimal);
         animals.add(anAnimal);
     }
-    
+
     /**
      * Return the animal at the given location, if any.
      * @param location Where in the field.
@@ -105,7 +105,7 @@ public class Field
                     }
                 }
             }
-            
+
             // Shuffle the list. Several other methods rely on the list
             // being in a random order.
             Collections.shuffle(locations, rand);
@@ -119,8 +119,12 @@ public class Field
     public void fieldStats()
     {
         int numOcelotes = 0, numArmadillos = 0, numDeers = 0, 
-        numSnakes = 0, numWolves = 0;
+        numSnakes = 0, numWolves = 0 , numInfected = 0;
         for(Animal anAnimal : field.values()) {
+            if (anAnimal.isInfected()) {
+                numInfected++;
+            }
+
             if(anAnimal instanceof Ocelot ocelot) {
                 if(ocelot.isAlive()) {
                     numOcelotes++;
@@ -148,10 +152,21 @@ public class Field
             }
         }
         System.out.println("Armadillos: " + numArmadillos +
-                           " Ocelotes: " + numOcelotes +
-                           " Deers: " + numDeers +
-                           " Snakes: " + numSnakes +
-                           " Wolves: " + numWolves);
+            " Ocelotes: " + numOcelotes +
+            " Deers: " + numDeers +
+            " Snakes: " + numSnakes +
+            " Wolves: " + numWolves +
+            " Infected: " + numInfected);
+    }
+
+    public int infectedCount() {
+        int numInfected = 0;
+        for(Animal anAnimal : field.values()) {
+            if (anAnimal.isInfected()) {
+                numInfected++;
+            }
+        }
+        return numInfected;
     }
 
     /**
@@ -175,7 +190,7 @@ public class Field
         boolean jaguarFound = false;
         Iterator<Animal> it = animals.iterator();
         while(it.hasNext() && ! (armadilloFound && ocelotFound && jaguarFound
-                                && deerFound && snakeFound)) {
+            && deerFound && snakeFound)) {
             Animal anAnimal = it.next();
             if(anAnimal instanceof Armadillo armadillo) {
                 if(armadillo.isAlive()) {
@@ -205,7 +220,7 @@ public class Field
         }
         return armadilloFound && ocelotFound && deerFound && snakeFound && jaguarFound;
     }
-    
+
     /**
      * Get the list of animals.
      */
@@ -222,7 +237,7 @@ public class Field
     {
         return depth;
     }
-    
+
     /**
      * Return the width of the field.
      * @return The width of the field.

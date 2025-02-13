@@ -23,6 +23,7 @@ public class SimulatorView extends JFrame
 
     private final String STEP_PREFIX = "Step: ";
     private final String TIME_PREFIX = "Time: ";
+    private final String WEATHER_PREFIX = "Weather: ";
     private final String POPULATION_PREFIX = "Population: ";
     private final JLabel northLabel;
     private final JLabel population;
@@ -95,18 +96,15 @@ public class SimulatorView extends JFrame
      * @param step Which iteration step it is.
      * @param field The field whose status is to be displayed.
      */
-    public void showStatus(int step, Time time, Field field)
+    public void showStatus(int step, Time time, Field field, Weather weather)
     {
         if(!isVisible()) {
             setVisible(true);
         }
-
         
-        if (time == Time.NIGHT) {
-            northLabel.setText(STEP_PREFIX + step + " " + TIME_PREFIX + "night");
-        } else if (time == Time.DAY) {
-            northLabel.setText(STEP_PREFIX + step + " " + TIME_PREFIX + "day");
-        }
+        northLabel.setText(STEP_PREFIX + step + " " + TIME_PREFIX + time + " " + 
+                            WEATHER_PREFIX + weather);
+        
         stats.reset();
         
         fieldView.preparePaint();

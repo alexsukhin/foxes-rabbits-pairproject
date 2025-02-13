@@ -45,30 +45,41 @@ public abstract class Predator extends Animal
      * @param currentField The field currently occupied.
      * @param nextFieldState The updated field.
      */
-    public void act(Field currentField, Field nextFieldState, Time time)
+    public void act(Field currentField, Field nextFieldState, Time time, Weather weather)
     {
         incrementAge();
         incrementHunger();
         if(isAlive()) {
             List<Location> freeLocations =
                 nextFieldState.getFreeAdjacentLocations(getLocation());
-            if(! freeLocations.isEmpty()) {
-                giveBirth(nextFieldState, freeLocations);
+
+            checkIfInfected(nextFieldState); 
+
+            if (isInfected() && rand.nextDouble() < 0.5) {
+                setDead();
             }
-            // Move towards a source of food if found.
-            Location nextLocation = findFood(currentField, time);
-            if(nextLocation == null && ! freeLocations.isEmpty()) {
-                // No food found - try to move to a free location.
-                nextLocation = freeLocations.remove(0);
-            }
-            // See if it was possible to move.
-            if(nextLocation != null) {
-                setLocation(nextLocation);
-                nextFieldState.placeAnimal(this, nextLocation);
+            else if (canAct(weather)) {
+                if(! freeLocations.isEmpty()) {
+                    giveBirth(nextFieldState, freeLocations);
+                }
+                // Move towards a source of food if found.
+                Location nextLocation = findFood(currentField, time);
+                if(nextLocation == null && ! freeLocations.isEmpty()) {
+                    // No food found - try to move to a free location.
+                    nextLocation = freeLocations.remove(0);
+                }
+                // See if it was possible to move.`
+                if(nextLocation != null) {
+                    setLocation(nextLocation);
+                    nextFieldState.placeAnimal(this, nextLocation);
+                }
+                else {
+                    // Overcrowding.
+                    setDead();
+                }
             }
             else {
-                // Overcrowding.
-                setDead();
+                nextFieldState.placeAnimal(this, getLocation());
             }
         }
     }
@@ -121,7 +132,7 @@ public abstract class Predator extends Animal
     public int getFoodLevel() {
         return foodLevel;
     }
-    
+
     /**
      * Check whether this predator is to give birth at this step.
      * New births will be made into free adjacent locations.
@@ -157,39 +168,39 @@ public abstract class Predator extends Animal
         }
         return births;
     }
-    
+
     /**
      * Increase the age.
      * This could result in the predator's death.
      */
     abstract protected void incrementAge();
-    
+
     /**
      * Check if the given animal is a prey of the predator.
      * @param Animal The animal to check if its a prey.
      * @return true, if the animal is a prey, otherwise false.
      */
     abstract protected boolean isPrey(Animal animal);
-    
+
     /**
      * Create a new predator as offspring.
      * @param loc The location off the new offspring.
      * @return The offspring.
      */
     abstract protected Animal offspring(Location loc);
-    
+
     /**
      * A predator can breed successfully if it has reached the breeding age,
      * and luck is on its side.
      * @return true if the prey breeds successfully, false otherwise.
      */
     abstract protected boolean breedSuccess();
-    
+
     /**
      * Generate number of offspring if breeding is successful.
      * @return Number of offspring.
      */
     abstract protected int birthNumber();
-    
+
     abstract protected boolean huntSuccess(Time time);
 }
