@@ -49,7 +49,7 @@ public class Simulator
     {
         this(DEFAULT_DEPTH, DEFAULT_WIDTH);
     }
-  
+
     public Simulator(int depth, int width)
     {
         if(width <= 0 || depth <= 0) {
@@ -58,7 +58,7 @@ public class Simulator
             depth = DEFAULT_DEPTH;
             width = DEFAULT_WIDTH;
         }
-        
+
         field = new Field(depth, width);
         view = new SimulatorView(depth, width);
         time = Time.DAY;
@@ -66,7 +66,7 @@ public class Simulator
 
         reset();
     }
-    
+
     /**
      * Run the simulation from its current state for a reasonably long 
      * period (700 steps).
@@ -75,7 +75,7 @@ public class Simulator
     {
         simulate(700);
     }
-  
+
     /**
      * Run the simulation from its current state for a single step.
      * Iterate over the whole field updating the state of each ocelot and armadillo.
@@ -90,49 +90,40 @@ public class Simulator
         List<Animal> animals = field.getAnimals();
         for (Animal anAnimal : animals) {
             anAnimal.act(field, nextFieldState, time, weather);
-          
+        }
+
         List<Plant> plants = field.getPlants();
-            for (Plant plant : plants) {
-               plant.act(field, nextFieldState);
-            }
-         
+        for (Plant plant : plants) {
+            plant.act(field, nextFieldState);
+        }
+
         // Replace the old state with the new one.
         field = nextFieldState;
-          
+
         // Changes the day/time cycle every 20 steps.
         changeTime();
-        
+
         // Changes the weather cycle every 10 steps.
         changeWeather();
 
         reportStats();
         view.showStatus(step, time, field, weather);
-        }
-        
-        /**
-         * Run the simulation from its current state for a reasonably long 
-         * period (4000 steps).
-         */
-        public void runLongSimulation()
-        {
-            simulate(700);
-        }
-        
+    }
 
-        /**
-         * Run the simulation for the given number of steps.
-         * Stop before the given number of steps if it ceases to be viable.
-         * @param numSteps The number of steps to run for.
-         */
-        public void simulate(int numSteps)
-        {
-            reportStats();
-            for(int n = 1; n <= numSteps && field.isViable(); n++) {
-                simulateOneStep();
-                delay(50);         // adjust this to change execution speed
-            }
+    /**
+     * Run the simulation for the given number of steps.
+     * Stop before the given number of steps if it ceases to be viable.
+     * @param numSteps The number of steps to run for.
+     */
+    public void simulate(int numSteps)
+    {
+        reportStats();
+        for(int n = 1; n <= numSteps && field.isViable(); n++) {
+            simulateOneStep();
+            delay(50);         // adjust this to change execution speed
         }
-        
+    }
+
     /**
      * Reset the simulation to a starting position.
      */
@@ -143,86 +134,85 @@ public class Simulator
         populate();
         view.showStatus(step, time, field, weather);
     }
- 
-        /**
-         * Randomly populate the field with ocelotes and armadillos.
-         */
-        private void populate()
-        {
-            Random rand = Randomizer.getRandom();
-            field.clear();
-            for(int row = 0; row < field.getDepth(); row++) {
-                for(int col = 0; col < field.getWidth(); col++) {
-                    if(rand.nextDouble() <= DEER_CREATION_PROBABILITY) {
-                        Location location = new Location(row, col);
-                        Deer deer = new Deer(true, location);
-                        field.placeAnimal(deer, location);
-                    }
-                    else if(rand.nextDouble() <= JAGUAR_CREATION_PROBABILITY) {
-                        Location location = new Location(row, col);
-                        Jaguar jaguar = new Jaguar(true, location);
-                        field.placeAnimal(jaguar, location);
-                    }
-                    else if(rand.nextDouble() <= SNAKE_CREATION_PROBABILITY) {
-                        Location location = new Location(row, col);
-                        Snake snake = new Snake(true, location);
-                        field.placeAnimal(snake, location);
-                    }
-                    else if(rand.nextDouble() <= OCELOT_CREATION_PROBABILITY) {
-                        Location location = new Location(row, col);
-                        Ocelot ocelot = new Ocelot(true, location);
-                        field.placeAnimal(ocelot, location);
-                    }
-                    else if(rand.nextDouble() <= ARMADILLO_CREATION_PROBABILITY) {
-                        Location location = new Location(row, col);
-                        Armadillo armadillo = new Armadillo(true, location);
-                        field.placeAnimal(armadillo, location);
-                    }
-                    else if(rand.nextDouble() <= PLANT_CREATION_PROBABILITY) {
-                        Location location = new Location(row, col);
-                        Plant plant = new CorePlant(location);
-                        field.placePlant(plant, location);
-                    }
-                    // else leave the location empty.
+
+    /**
+     * Randomly populate the field with ocelotes and armadillos.
+     */
+    private void populate()
+    {
+        Random rand = Randomizer.getRandom();
+        field.clear();
+        for(int row = 0; row < field.getDepth(); row++) {
+            for(int col = 0; col < field.getWidth(); col++) {
+                if(rand.nextDouble() <= DEER_CREATION_PROBABILITY) {
+                    Location location = new Location(row, col);
+                    Deer deer = new Deer(true, location);
+                    field.placeAnimal(deer, location);
                 }
-            }
-        }
-    
-        /**
-         * Report on the number of each type of animal in the field.
-         */
-        public void reportStats()
-        {
-            //System.out.print("Step: " + step + " ");
-            field.fieldStats();
-        }
-        
-        /**
-         * Pause for a given time.
-         * @param milliseconds The time to pause for, in milliseconds
-         */ 
-        private void delay(int milliseconds)
-        {
-            try {
-                Thread.sleep(milliseconds);
-            }
-            catch(InterruptedException e) {
-                // ignore
-            }
-        }
-        
-        /**
-         * Every step cycle, checks whether we are on the 50th multiple step.
-         * If we are, changes day/night cycle via flag.
-         */
-        private void changeTime()
-        {
-            if (step % DAY_STEPS == 0) {
-                time = (time == Time.DAY) ? Time.NIGHT : Time.DAY;
+                else if(rand.nextDouble() <= JAGUAR_CREATION_PROBABILITY) {
+                    Location location = new Location(row, col);
+                    Jaguar jaguar = new Jaguar(true, location);
+                    field.placeAnimal(jaguar, location);
+                }
+                else if(rand.nextDouble() <= SNAKE_CREATION_PROBABILITY) {
+                    Location location = new Location(row, col);
+                    Snake snake = new Snake(true, location);
+                    field.placeAnimal(snake, location);
+                }
+                else if(rand.nextDouble() <= OCELOT_CREATION_PROBABILITY) {
+                    Location location = new Location(row, col);
+                    Ocelot ocelot = new Ocelot(true, location);
+                    field.placeAnimal(ocelot, location);
+                }
+                else if(rand.nextDouble() <= ARMADILLO_CREATION_PROBABILITY) {
+                    Location location = new Location(row, col);
+                    Armadillo armadillo = new Armadillo(true, location);
+                    field.placeAnimal(armadillo, location);
+                }
+                else if(rand.nextDouble() <= PLANT_CREATION_PROBABILITY) {
+                    Location location = new Location(row, col);
+                    Plant plant = new CorePlant(location);
+                    field.placePlant(plant, location);
+                }
+                // else leave the location empty.
             }
         }
     }
-    
+
+    /**
+     * Report on the number of each type of animal in the field.
+     */
+    public void reportStats()
+    {
+        //System.out.print("Step: " + step + " ");
+        field.fieldStats();
+    }
+
+    /**
+     * Pause for a given time.
+     * @param milliseconds The time to pause for, in milliseconds
+     */ 
+    private void delay(int milliseconds)
+    {
+        try {
+            Thread.sleep(milliseconds);
+        }
+        catch(InterruptedException e) {
+            // ignore
+        }
+    }
+
+    /**
+     * Every step cycle, checks whether we are on the 50th multiple step.
+     * If we are, changes day/night cycle via flag.
+     */
+    private void changeTime()
+    {
+        if (step % DAY_STEPS == 0) {
+            time = (time == Time.DAY) ? Time.NIGHT : Time.DAY;
+        }
+    }
+
     /**
      * Every step cycle, checks whether we are on the 10th multiple step.
      * If we are, changes weather cycle via flag.

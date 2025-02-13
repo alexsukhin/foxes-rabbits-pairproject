@@ -18,7 +18,7 @@ public abstract class Prey extends Animal
     // The number of steps before the prey dies of hunger.
     private static final int HUNGRY_STEPS = 20;
     private static final Random rand = Randomizer.getRandom();
-    
+
     /**
      * Constructor for objects of class Prey
      */
@@ -41,14 +41,14 @@ public abstract class Prey extends Animal
         incrementAge();
         if(isAlive()) {
             incrementHunger();
-            
+
             List<Location> freeLocations = nextFieldState.getFreeAdjacentLocations(getLocation());
             checkIfInfected(nextFieldState); 
-            
+
             if (isInfected() && rand.nextDouble() < 0.5) {
                 setDead();
             }
-            else if canAct(weather) {
+            else if (canAct(weather)) {
                 if(!freeLocations.isEmpty()) {
                     giveBirth(nextFieldState, freeLocations);
                 }
@@ -80,12 +80,13 @@ public abstract class Prey extends Animal
                 }
             }
             else {
-                nextFieldState.placeAnimal(this, getLocation());
+                if (getLocation() != null) {
+                        nextFieldState.placeAnimal(this, getLocation());
+                    }
             }
         }
     }
-   
-    
+
     /**
      * Make this prey more hungry. This could result in the prey's death.
      * After eating, the prey will be full for FULL_STEPS steps.
@@ -106,7 +107,7 @@ public abstract class Prey extends Animal
             }
         }
     }
-    
+
     /**
      * Look for plants adjacent to the current location.
      * Only the first live plant is eaten.

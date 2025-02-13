@@ -118,7 +118,7 @@ public class Field
                 }
             }
         }
-        return free;https://github.com/alexsukhin/foxes-rabbits-pairproject
+        return free;
     }
 
     /** 
@@ -161,13 +161,12 @@ public class Field
     public void fieldStats()
     {
         int numOcelotes = 0, numArmadillos = 0, numDeers = 0, 
-
-        numSnakes = 0, numWolves = 0;
+        numSnakes = 0, numWolves = 0, numInfected = 0;
         for(Pair<Animal, Plant> pair : field.values()) {
             
             Animal anAnimal = pair.first();
           
-            if (anAnimal.isInfected()) {
+            if (anAnimal != null && anAnimal.isInfected()) {
                 numInfected++;
             }
 
@@ -207,8 +206,11 @@ public class Field
 
     public int infectedCount() {
         int numInfected = 0;
-        for(Animal anAnimal : field.values()) {
-            if (anAnimal.isInfected()) {
+        for(Pair<Animal, Plant> pair : field.values()) {
+            
+            Animal anAnimal = pair.first();
+            
+            if (anAnimal != null && anAnimal.isInfected()) {
                 numInfected++;
             }
         }
