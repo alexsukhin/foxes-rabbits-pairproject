@@ -16,6 +16,9 @@ public abstract class Animal
     // Whether the animal is male or female.
     // True for female, false for male.
     private boolean female;
+    // Whether the animal is infected
+    private boolean infected;
+    private static final Random rand = Randomizer.getRandom();
 
     /**
      * Constructor for objects of class Animal.
@@ -24,18 +27,40 @@ public abstract class Animal
     public Animal(Location location)
     {
         Random random = new Random();
-        this.alive = true;
+        alive = true;
         this.location = location;
-        this.female = random.nextBoolean();
+        female = random.nextBoolean();
+        if (rand.nextDouble() < 0.005) {
+            infected = true;
+        }
+        else {
+            infected = false;
+        }
     }
-    
+
     /**
      * Act.
      * @param currentField The current state of the field.
      * @param nextFieldState The new state being built.
      */
-    abstract public void act(Field currentField, Field nextFieldState, Time time);
-        
+    abstract public void act(Field currentField, Field nextFieldState, Time time, Weather weather);
+    
+    public boolean canAct(Weather weather) {
+        if (weather == Weather.CLEAR) {
+            return true;
+        }
+        else if (weather == Weather.RAIN && rand.nextDouble() < 0.6) {
+            return true;
+        }
+        else if (weather == Weather.CLOUDY && rand.nextDouble() < 0.8) {
+            return true;
+        }
+        else if (weather == Weather.STORM && rand.nextDouble() < 0.4) {
+            return true;
+        }
+        return false;
+    }
+
     /**
      * Checks if there is a compatible mate in the adjacent cells.
      * @param field The field to check for adjacent animals.
@@ -45,11 +70,26 @@ public abstract class Animal
         List<Location> adjacentLocations = field.getAdjacentLocations(getLocation());
         for (Location loc : adjacentLocations) {
             Animal animal = field.getAnimalAt(loc);
-            if ((animal != null) && (animal.getClass() == this.getClass()) && (animal.isFemale() != this.isFemale())) {
+            if ((animal != null) && (animal.getClass() == this.getClass()) 
+                && (animal.isFemale() != this.isFemale())) {
                 return true;
             }
         }
         return false;
+    }
+    
+    public void checkIfInfected(Field field) {
+        List<Location> adjacentLocations = field.getAdjacentLocations(getLocation());
+        for (Location loc : adjacentLocations) {
+            Animal animal = field.getAnimalAt(loc);
+            if (animal != null && animal.isInfected()) {
+                infected= true;
+            }
+        }
+    }
+    
+    public boolean isInfected() {
+        return infected;
     }
     
     /**
@@ -69,7 +109,7 @@ public abstract class Animal
         alive = false;
         location = null;
     }
-    
+
     /**
      * Return the animal's location.
      * @return The animal's location.
@@ -78,7 +118,7 @@ public abstract class Animal
     {
         return location;
     }
-    
+
     /**
      * Set the animal's location.
      * @param location The new location.
@@ -87,7 +127,7 @@ public abstract class Animal
     {
         this.location = location;
     }
-    
+
     /**
      * Check whether the animal is female or not.
      * @return true if the animal is female.
