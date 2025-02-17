@@ -63,7 +63,6 @@ public class Ocelot extends Predator
                 "age=" + age +
                 ", alive=" + isAlive() +
                 ", location=" + getLocation() +
-                ", foodLevel=" + getFoodLevel() +
                 '}';
     }
 

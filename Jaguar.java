@@ -53,7 +53,7 @@ public class Jaguar extends Predator
         "age=" + age +
         ", alive=" + isAlive() +
         ", location=" + getLocation() +
-        ", foodLevel=" + getFoodLevel() +
+        ", foodLevel=" +
         '}';
     }
 

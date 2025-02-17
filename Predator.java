@@ -10,14 +10,14 @@ import java.util.Random;
  */
 public abstract class Predator extends Animal
 {
-    // The Predator's food level, which is increased by eating armadillos.
-    private int foodLevel;
-    // The food value of a single armadillo. In effect, this is the
-    // number of steps a armadillo-eating predator can go before it has to eat again.
-    private static final int ARMADILLO_FOOD_VALUE = 9;
-    // The food value of a single deer. 
-    private static final int DEER_FOOD_VALUE = 50;
-    // For food value at start.
+    // Represents whether the predator is full or hungry.
+    private boolean isFull;
+    // Tracks how long the predator has been hungry or full (in steps).
+    private int hungerTimer;
+    // The number of steps before the predator goes hungry.
+    private int FULL_STEPS;
+    // The number of steps before the predator dies of hunger.
+    private int HUNGRY_STEPS;
     private static final Random rand = Randomizer.getRandom();
 
     /**
@@ -30,11 +30,17 @@ public abstract class Predator extends Animal
     public Predator(Location location, Class<?> prey)
     {
         super(location);
+        
+        isFull = false;
+        hungerTimer = 0;
+        
         if (prey == Armadillo.class) {
-            foodLevel = rand.nextInt(ARMADILLO_FOOD_VALUE);
+            FULL_STEPS = 5;
+            HUNGRY_STEPS = rand.nextInt(10);
         }
         else if (prey == Deer.class) {
-            foodLevel = rand.nextInt(DEER_FOOD_VALUE);
+            FULL_STEPS = 5;
+            HUNGRY_STEPS = rand.nextInt(50);
         }
     }
 
@@ -55,7 +61,7 @@ public abstract class Predator extends Animal
 
             checkIfInfected(nextFieldState); 
 
-            if (isInfected() && rand.nextDouble() < 0.5) {
+            if (isInfected() && rand.nextDouble() < 0.2) {
                 setDead();
             }
             else if (canAct(weather)) {
@@ -89,9 +95,18 @@ public abstract class Predator extends Animal
      */
     private void incrementHunger()
     {
-        foodLevel--;
-        if(foodLevel <= 0) {
-            setDead();
+        if (isFull) {
+            hungerTimer++;
+            if (hungerTimer >= FULL_STEPS) {
+                isFull = false;
+                hungerTimer = 0;
+            }
+        } else {
+            hungerTimer++;
+            if (hungerTimer >= HUNGRY_STEPS) {
+                setDead();
+                hungerTimer = 0;
+            }
         }
     }
 
@@ -112,25 +127,19 @@ public abstract class Predator extends Animal
             if(isPrey(animal) && huntSuccess(time)) {
                 if(animal instanceof Armadillo armadillo) {
                     armadillo.setDead();
-                    foodLevel = ARMADILLO_FOOD_VALUE;
+                    hungerTimer = 0;
+                    isFull = true;
                     foodLocation = loc;
                 }
                 else if(animal instanceof Deer deer) {
                     deer.setDead();
-                    foodLevel = DEER_FOOD_VALUE;
+                    hungerTimer = 0;
+                    isFull = true;
                     foodLocation = loc;
                 }
             }
         }
         return foodLocation;
-    }
-
-    /**
-     * Get the food level of the predator.
-     * @return the food level.
-     */
-    public int getFoodLevel() {
-        return foodLevel;
     }
 
     /**

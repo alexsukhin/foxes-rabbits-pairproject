@@ -51,7 +51,7 @@ public class Snake extends Predator
                 "age=" + age +
                 ", alive=" + isAlive() +
                 ", location=" + getLocation() +
-                ", foodLevel=" + getFoodLevel() +
+                ", foodLevel=" +
                 '}';
     }
 

@@ -39,13 +39,13 @@ public abstract class Prey extends Animal
     public void act(Field currentField, Field nextFieldState, Time time, Weather weather)
     {
         incrementAge();
+        incrementHunger();  
         if(isAlive()) {
-            incrementHunger();
 
             List<Location> freeLocations = nextFieldState.getFreeAdjacentLocations(getLocation());
             checkIfInfected(nextFieldState); 
 
-            if (isInfected() && rand.nextDouble() < 0.5) {
+            if (isInfected() && rand.nextDouble() < 0.2) {
                 setDead();
             }
             else if (canAct(weather)) {
@@ -126,7 +126,7 @@ public abstract class Prey extends Animal
                 leafCell.removePlant();
                 hungerTimer = 0;
                 isFull = true;
-
+                foodLocation = loc;
             }
         }
         return foodLocation;
