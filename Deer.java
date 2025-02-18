@@ -6,7 +6,7 @@ import java.util.List;
  * Deer age, move, breed, and die..
  *
  * @Aryan Sanvee Vijayan
- * @version 02/02/2025
+ * @version 18/02/2025
  */
 public class Deer extends Prey
 {
@@ -16,11 +16,9 @@ public class Deer extends Prey
     // The age to which a deer can live.
     private static final int MAX_AGE = 175;
     // The likelihood of a deer breeding.
-    private static final double BREEDING_PROBABILITY = 0.75;
+    private static final double BREEDING_PROBABILITY = 0.7;
     // The maximum number of births.
     private static final int MAX_LITTER_SIZE = 3;
-    // A shared random number generator to control breeding.
-    private static final Random rand = Randomizer.getRandom();
     
     // Individual characteristics (instance fields).
     
@@ -39,7 +37,7 @@ public class Deer extends Prey
         super(location);
         age = 0;
         if(randomAge) {
-            age = rand.nextInt(MAX_AGE);
+            age = randInt(MAX_AGE);
         }
     }
     
@@ -71,7 +69,7 @@ public class Deer extends Prey
      */
     protected boolean breedSuccess()
     {
-        return age >= BREEDING_AGE && rand.nextDouble() <= BREEDING_PROBABILITY;
+        return age >= BREEDING_AGE && randDouble() <= BREEDING_PROBABILITY;
     }
     
     /**
@@ -89,14 +87,19 @@ public class Deer extends Prey
      * @return Number of offspring.
      */
     protected int birthNumber() {
-        return rand.nextInt(MAX_LITTER_SIZE) + 1;
+        return randInt(MAX_LITTER_SIZE) + 1;
     }
     
+    /**
+     * Calculate if a deer can move at this step.
+     * @param time The time of day/night.
+     * @return true if the deer can move, false otherwise.
+     */
     protected boolean canMove(Time time) {
         if (time == Time.DAY) {
             return true;
         }
-        else if ((time == Time.NIGHT) && (rand.nextDouble() < 0.6)) {
+        else if ((time == Time.NIGHT) && (randDouble() < 0.6)) {
             return true;
         }
         else {

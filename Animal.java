@@ -83,6 +83,10 @@ public abstract class Animal extends Organism
         }
     }
     
+    /**
+     * Check whether the animal is infected.
+     * @return true if the animal is infected, false otherwise.
+     */
     public boolean isInfected() {
         return infected;
     }
@@ -94,5 +98,24 @@ public abstract class Animal extends Organism
     public boolean isFemale()
     {
         return female;
+    }
+    
+    /**
+     * Generate a random integer less than a given integer.
+     * @param max The maximum below which get the random integer from.
+     * @return The random integer.
+     */
+    public int randInt(int max)
+    {
+        return rand.nextInt(max);
+    }
+    
+    /**
+     * Generate a random double between 0 and 1.
+     * @return The random double.
+     */
+    public double randDouble()
+    {
+        return rand.nextDouble();
     }
 }

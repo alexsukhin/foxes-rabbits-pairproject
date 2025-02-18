@@ -5,7 +5,7 @@ import java.util.*;
  * Snakes age, move, eat armadillos, and die.
  *
  * @author Aryan Sanvee Vijayan
- * @version 02/02/2025
+ * @version 18/02/2025
  */
 public class Snake extends Predator
 {
@@ -15,12 +15,11 @@ public class Snake extends Predator
     // The age to which a snake can live.
     private static final int MAX_AGE = 200;
     // The likelihood of a snake breeding.
-    private static final double BREEDING_PROBABILITY = 0.15;
+    private static final double BREEDING_PROBABILITY = 0.3;
     // The maximum number of births.
     private static final int MAX_LITTER_SIZE = 30;
+    // The likelihood of a snake hunting at night.
     private static final double NIGHT_HUNT_PROBABILITY = 0.25;
-    // A shared random number generator to control breeding.
-    private static final Random rand = Randomizer.getRandom();
     
     // Individual characteristics (instance fields).
 
@@ -38,7 +37,7 @@ public class Snake extends Predator
     {
         super(location, Armadillo.class);
         if(randomAge) {
-            age = rand.nextInt(MAX_AGE);
+            age = randInt(MAX_AGE);
         }
         else {
             age = 0;
@@ -86,7 +85,7 @@ public class Snake extends Predator
      */
     protected boolean breedSuccess()
     {
-        return age >= BREEDING_AGE && rand.nextDouble() <= BREEDING_PROBABILITY;
+        return age >= BREEDING_AGE && randDouble() <= BREEDING_PROBABILITY;
     }
     
     /**
@@ -104,12 +103,17 @@ public class Snake extends Predator
      * @return Number of offspring.
      */
     protected int birthNumber() {
-        return rand.nextInt(MAX_LITTER_SIZE) + 1;
+        return randInt(MAX_LITTER_SIZE) + 1;
     }
     
+    /**
+     * Calculate whether a hunt is successful.
+     * @param time The time of day/night.
+     * @return true if the hunt is successful, false otherwise.
+     */
     public boolean huntSuccess(Time time) {
         if (time == Time.NIGHT) {
-            return rand.nextDouble() >= NIGHT_HUNT_PROBABILITY;
+            return randDouble() >= NIGHT_HUNT_PROBABILITY;
         } 
         else {
             return true;

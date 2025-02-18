@@ -1,4 +1,4 @@
-    import java.awt.*;
+import java.awt.*;
 import javax.swing.*;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -10,8 +10,8 @@ import java.util.Map;
  * Colors for each type of species can be defined using the
  * setColor method.
  * 
- * @author David J. Barnes, Aryan Sanvee Vijayan and Michael Kölling
- * @version 02/02/2025
+ * @author David J. Barnes, Aryan Sanvee Vijayan, Alexander Sukhin and Michael Kölling
+ * @version 18/02/2025
  */
 public class SimulatorView extends JFrame
 {

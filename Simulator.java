@@ -4,8 +4,8 @@ import java.util.*;
  * A simple predator-prey simulator, based on a rectangular field containing 
  * prey and predators.
  *  
- * @author David J. Barnes, Aryan Sanvee Vijayan and Michael Kölling
- * @version 02/02/2025
+ * @author David J. Barnes, Aryan Sanvee Vijayan, Alexander Sukhin and Michael Kölling
+ * @version 19/02/2025
  */
 public class Simulator
 {
@@ -15,21 +15,21 @@ public class Simulator
     // The default depth of the grid.
     private static final int DEFAULT_DEPTH = 100;
     // The probability that a ocelot will be created in any given grid position.
-    private static final double OCELOT_CREATION_PROBABILITY = 0.02;
+    private static final double OCELOT_CREATION_PROBABILITY = 0.01;
     // The probability that a armadillo will be created in any given position.
     private static final double ARMADILLO_CREATION_PROBABILITY = 0.05;    
     // The probability that a deer will be created in any given position.
     private static final double DEER_CREATION_PROBABILITY = 0.05;
     // The probability that a snake will be created in any given position.
-    private static final double SNAKE_CREATION_PROBABILITY = 0.02;
+    private static final double SNAKE_CREATION_PROBABILITY = 0.01;
     // The probability that a jaguar will be created in any given position.
     private static final double JAGUAR_CREATION_PROBABILITY = 0.01;
     // The probability that a plant will be created in any given position
     private static final double PLANT_CREATION_PROBABILITY = 0.02;
     // The number of steps in one day/night cycle.
-    private static final int DAY_STEPS = 20;
+    private static final int DAY_STEPS = 5;
     // The number of steps in one weather cycle.
-    private static final int WEATHER_STEPS = 40;
+    private static final int WEATHER_STEPS = 10;
     // The current state of day/night.
     private Time time;
     // The current state of weather.
@@ -49,7 +49,10 @@ public class Simulator
     {
         this(DEFAULT_DEPTH, DEFAULT_WIDTH);
     }
-
+    
+    /**
+     * Construct a simulation field with specific size.
+     */
     public Simulator(int depth, int width)
     {
         if(width <= 0 || depth <= 0) {
@@ -136,7 +139,7 @@ public class Simulator
     }
 
     /**
-     * Randomly populate the field with ocelotes and armadillos.
+     * Randomly populate the field with prey and predators.
      */
     private void populate()
     {

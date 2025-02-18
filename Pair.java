@@ -1,9 +1,9 @@
 
 /**
- * Write a description of class Pair here.
+ * P.
  *
- * @author (your name)
- * @version (a version number or a date)
+ * @author Alexander Sukhin
+ * @version 19/02/2025
  */
 class Pair<F, S>
 {

@@ -6,7 +6,7 @@ import java.util.Random;
  * A general model of a predator in the simulation.
  *
  * @author Aryan Sanvee Vijayan
- * @version 02/02/2025
+ * @version 18/02/2025
  */
 public abstract class Predator extends Animal
 {
@@ -18,7 +18,6 @@ public abstract class Predator extends Animal
     private int FULL_STEPS;
     // The number of steps before the predator dies of hunger.
     private int HUNGRY_STEPS;
-    private static final Random rand = Randomizer.getRandom();
 
     /**
      * Create a predator. A predator can be created as a new born (age zero
@@ -36,11 +35,11 @@ public abstract class Predator extends Animal
         
         if (prey == Armadillo.class) {
             FULL_STEPS = 5;
-            HUNGRY_STEPS = rand.nextInt(10);
+            HUNGRY_STEPS = randInt(10);
         }
         else if (prey == Deer.class) {
             FULL_STEPS = 5;
-            HUNGRY_STEPS = rand.nextInt(50);
+            HUNGRY_STEPS = randInt(50);
         }
     }
 
@@ -58,14 +57,18 @@ public abstract class Predator extends Animal
         if(isAlive()) {
             List<Location> freeLocations =
                 nextFieldState.getFreeAdjacentLocations(getLocation());
-
+            
+            // Check if the predator is infected in the next field state.
             checkIfInfected(nextFieldState); 
 
-            if (isInfected() && rand.nextDouble() < 0.2) {
+            if (isInfected() && randDouble() < 0.5) {
+                // 50% chance of dying due to infection.
                 setDead();
             }
+            // if predator can act considering weather circumstances.
             else if (canAct(weather)) {
                 if(! freeLocations.isEmpty()) {
+                    // Try to breed.
                     giveBirth(nextFieldState, freeLocations);
                 }
                 // Move towards a source of food if found.
@@ -85,6 +88,7 @@ public abstract class Predator extends Animal
                 }
             }
             else {
+                // let the predator stay in the same place.
                 nextFieldState.placeAnimal(this, getLocation());
             }
         }
@@ -210,6 +214,11 @@ public abstract class Predator extends Animal
      * @return Number of offspring.
      */
     abstract protected int birthNumber();
-
+    
+    /**
+     * Calculate whether a hunt is successful.
+     * @param time The time of day/night.
+     * @return true if the hunt is successful, false otherwise.
+     */
     abstract protected boolean huntSuccess(Time time);
 }

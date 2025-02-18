@@ -9,7 +9,6 @@
  */
 public class LeafCell extends Plant
 {
-    
     // Represents the core plant which the leaf
     // cell extends from.
     private CorePlant parent;

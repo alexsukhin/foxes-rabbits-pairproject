@@ -1,7 +1,7 @@
 import java.util.Random;
 
 /**
- * Enumeration class Weather - write a description of the enum class here
+ * Enumeration class Weather - represents possible states of weather.
  *
  * @author Aryan Sanvee Vijayan
  * @version 12/02/2025

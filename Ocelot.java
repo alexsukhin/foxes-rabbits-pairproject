@@ -7,7 +7,7 @@ import java.util.Random;
  * Ocelotes age, move, eat armadilos, and die.
  * 
  * @author David J. Barnes, Aryan Sanvee Vijayan and Michael Kölling
- * @version 02/02/2025
+ * @version 19/02/2025
  */
 public class Ocelot extends Predator
 {
@@ -17,14 +17,12 @@ public class Ocelot extends Predator
     // The age to which a ocelot can live.
     private static final int MAX_AGE = 180;
     // The likelihood of a ocelot breeding.
-    private static final double BREEDING_PROBABILITY = 0.2;
+    private static final double BREEDING_PROBABILITY = 0.3;
     // The maximum number of births.
     private static final int MAX_LITTER_SIZE = 5;
-    // A shared random number generator to control breeding.
-    private static final Random rand = Randomizer.getRandom();
-    
-    
+    // The probability of an ocelot to hunt at night.
     private static final double NIGHT_HUNT_PROBABILITY = 0.25;
+    
     // Individual characteristics (instance fields).
 
     // The ocelot's age.
@@ -41,16 +39,21 @@ public class Ocelot extends Predator
     {
         super(location, Armadillo.class);
         if(randomAge) {
-            age = rand.nextInt(MAX_AGE);
+            age = randInt(MAX_AGE);
         }
         else {
             age = 0;
         }
     }
     
+    /**
+     * Calculate whether a hunt is successful.
+     * @param time The time of day/night.
+     * @return true if the hunt is successful, false otherwise.
+     */
     public boolean huntSuccess(Time time) {
         if (time == Time.NIGHT) {
-            return rand.nextDouble() >= NIGHT_HUNT_PROBABILITY;
+            return randDouble() >= NIGHT_HUNT_PROBABILITY;
         } 
         else {
             return true;
@@ -84,7 +87,7 @@ public class Ocelot extends Predator
      */
     protected boolean isPrey(Animal animal) {
         if(animal instanceof Armadillo armadillo) {
-                return true;
+            return true;
         }
         else {
             return false;
@@ -98,7 +101,7 @@ public class Ocelot extends Predator
      */
     protected boolean breedSuccess()
     {
-        return age >= BREEDING_AGE && rand.nextDouble() <= BREEDING_PROBABILITY;
+        return age >= BREEDING_AGE && randDouble() <= BREEDING_PROBABILITY;
     }
     
     /**
@@ -116,7 +119,6 @@ public class Ocelot extends Predator
      * @return Number of offspring.
      */
     protected int birthNumber() {
-        return rand.nextInt(MAX_LITTER_SIZE) + 1;
+        return randInt(MAX_LITTER_SIZE) + 1;
     }
-    
 }

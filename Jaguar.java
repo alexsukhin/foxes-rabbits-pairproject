@@ -1,4 +1,4 @@
-    import java.util.Random;
+import java.util.Random;
 import java.util.List;
 
 /**
@@ -6,7 +6,7 @@ import java.util.List;
  * Wolves age, move, eat deer, and die.
  * 
  * @author Aryan Sanvee Vijayan
- * @version 02/02/2025
+ * @version 18/02/2025
  */
 public class Jaguar extends Predator
 {
@@ -16,13 +16,11 @@ public class Jaguar extends Predator
     // The age to which a jaguar can live.
     private static final int MAX_AGE = 150;
     // The likelihood of a jaguar breeding.
-    private static final double BREEDING_PROBABILITY = 0.075;
+    private static final double BREEDING_PROBABILITY = 0.08;
     // The maximum number of births.
     private static final int MAX_LITTER_SIZE = 2;
     // The likelihood of a jaguar hunting during the night.
     private static final double NIGHT_HUNT_PROBABILITY = 0.5;
-    // A shared random number generator to control breeding.
-    private static final Random rand = Randomizer.getRandom();
 
     // Individual characteristics (instance fields).
 
@@ -40,7 +38,7 @@ public class Jaguar extends Predator
     {
         super(location, Deer.class);
         if(randomAge) {
-            age = rand.nextInt(MAX_AGE);
+            age = randInt(MAX_AGE);
         }
         else {
             age = 0;
@@ -67,7 +65,12 @@ public class Jaguar extends Predator
             setDead();
         }
     }
-
+    
+    /**
+     * Check if the given animal is a prey of Jaguar.
+     * @param Animal The animal to check if its a prey.
+     * @return true, if the animal is a prey, otherwise false.
+     */
     protected boolean isPrey(Animal animal) {
         if(animal instanceof Deer deer) {
             return true;
@@ -84,7 +87,7 @@ public class Jaguar extends Predator
      */
     protected boolean breedSuccess()
     {
-        return age >= BREEDING_AGE && rand.nextDouble() <= BREEDING_PROBABILITY;
+        return age >= BREEDING_AGE && randDouble() <= BREEDING_PROBABILITY;
     }
 
     /**
@@ -102,12 +105,17 @@ public class Jaguar extends Predator
      * @return Number of offspring.
      */
     protected int birthNumber() {
-        return rand.nextInt(MAX_LITTER_SIZE) + 1;
+        return randInt(MAX_LITTER_SIZE) + 1;
     }
-
+    
+    /**
+     * Calculate whether a hunt is successful.
+     * @param time The time of day/night.
+     * @return true if the hunt is successful, false otherwise.
+     */
     public boolean huntSuccess(Time time) {
         if (time == Time.NIGHT) {
-            return rand.nextDouble() >= NIGHT_HUNT_PROBABILITY;
+            return randDouble() >= NIGHT_HUNT_PROBABILITY;
         } 
         else {
             return true;

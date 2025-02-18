@@ -5,7 +5,7 @@ import java.util.Random;
  * A general model of a prey in the simulation.
  *
  * @author Aryan Sanvee Vijayan
- * @version 02/02/2025
+ * @version 18/02/2025
  */
 public abstract class Prey extends Animal
 {
@@ -17,7 +17,6 @@ public abstract class Prey extends Animal
     private static final int FULL_STEPS = 10;
     // The number of steps before the prey dies of hunger.
     private static final int HUNGRY_STEPS = 20;
-    private static final Random rand = Randomizer.getRandom();
 
     /**
      * Constructor for objects of class Prey
@@ -41,20 +40,24 @@ public abstract class Prey extends Animal
         incrementAge();
         incrementHunger();  
         if(isAlive()) {
-
             List<Location> freeLocations = nextFieldState.getFreeAdjacentLocations(getLocation());
+            
+            //Check if the prey is infected in the next field state.
             checkIfInfected(nextFieldState); 
 
-            if (isInfected() && rand.nextDouble() < 0.2) {
+            if (isInfected() && randDouble() < 0.5) {
+                // 50% chance of dying due to infection.
                 setDead();
             }
+            // if prey can act considering weather circumstances.
             else if (canAct(weather)) {
                 if(!freeLocations.isEmpty()) {
+                    // try to breed.
                     giveBirth(nextFieldState, freeLocations);
                 }
 
                 Location nextLocation = null;
-
+                // Move towards a sourch of food if found.
                 if (!isFull) {
                     Location plantLocation = findFood(currentField, time);
                     if (plantLocation != null) {
@@ -81,8 +84,9 @@ public abstract class Prey extends Animal
             }
             else {
                 if (getLocation() != null) {
-                        nextFieldState.placeAnimal(this, getLocation());
-                    }
+                    // let the prey sleep in the same place.
+                    nextFieldState.placeAnimal(this, getLocation());
+                }
             }
         }
     }
@@ -195,6 +199,11 @@ public abstract class Prey extends Animal
      * @return Number of offspring.
      */
     abstract protected int birthNumber();
-
+    
+    /**
+     * Calculate if a prey can move at this step.
+     * @param time The time of day/night.
+     * @return true if the prey can move, false otherwise.
+     */
     abstract protected boolean canMove(Time time);
 }
