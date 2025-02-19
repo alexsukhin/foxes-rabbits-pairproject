@@ -26,10 +26,6 @@ public class Ocelot extends Predator
     // The probability of an ocelot to hunt at day.
     private static final double DAY_HUNT_PROBABILITY = 0.5;
     
-    // Individual characteristics (instance fields).
-
-    // The ocelot's age.
-    private int age;
 
     /**
      * Create a ocelot. A ocelot can be created as a new born (age zero
@@ -42,10 +38,10 @@ public class Ocelot extends Predator
     {
         super(location, Armadillo.class);
         if(randomAge) {
-            age = randInt(MAX_AGE);
+            setAge(randInt(MAX_AGE));
         }
         else {
-            age = 0;
+            setAge(0);
         }
     }
     
@@ -66,7 +62,7 @@ public class Ocelot extends Predator
     @Override
     public String toString() {
         return "Ocelot{" +
-                "age=" + age +
+                "age=" + getAge() +
                 ", alive=" + isAlive() +
                 ", location=" + getLocation() +
                 '}';
@@ -75,10 +71,9 @@ public class Ocelot extends Predator
     /**
      * Increase the age. This could result in the ocelot's death.
      */
-    protected void incrementAge()
+    protected void checkIfTooOld()
     {
-        age++;
-        if(age > MAX_AGE) {
+        if(getAge() > MAX_AGE) {
             setDead();
         }
     }
@@ -104,7 +99,7 @@ public class Ocelot extends Predator
      */
     protected boolean breedSuccess()
     {
-        return age >= BREEDING_AGE && randDouble() <= BREEDING_PROBABILITY;
+        return getAge() >= BREEDING_AGE && randDouble() <= BREEDING_PROBABILITY;
     }
     
     /**

@@ -183,12 +183,6 @@ public abstract class Predator extends Animal
     }
 
     /**
-     * Increase the age.
-     * This could result in the predator's death.
-     */
-    abstract protected void incrementAge();
-
-    /**
      * Check if the given animal is a prey of the predator.
      * @param Animal The animal to check if its a prey.
      * @return true, if the animal is a prey, otherwise false.
@@ -221,4 +215,6 @@ public abstract class Predator extends Animal
      * @return true if the hunt is successful, false otherwise.
      */
     abstract protected boolean huntSuccess(Time time);
+    
+    abstract protected void checkIfTooOld();
 }

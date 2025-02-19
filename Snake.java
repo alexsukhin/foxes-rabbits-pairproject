@@ -24,11 +24,6 @@ public class Snake extends Predator
     // The likelihood of a snake hunting at night.
     private static final double DAY_HUNT_PROBABILITY = 0.9;
     
-    // Individual characteristics (instance fields).
-
-    // The snake's age.
-    private int age;
-    
     /**
      * Create a snake. A snake can be created as a new born (age zero
      * and not hungry) or with a random age and food level.
@@ -40,17 +35,17 @@ public class Snake extends Predator
     {
         super(location, Armadillo.class);
         if(randomAge) {
-            age = randInt(MAX_AGE);
+            setAge(randInt(MAX_AGE));
         }
         else {
-            age = 0;
+            setAge(0);
         }
     }
 
     @Override
     public String toString() {
         return "Snake{" +
-                "age=" + age +
+                "age=" + getAge() +
                 ", alive=" + isAlive() +
                 ", location=" + getLocation() +
                 ", foodLevel=" +
@@ -60,10 +55,9 @@ public class Snake extends Predator
     /**
      * Increase the age. This could result in the snake's death.
      */
-    protected void incrementAge()
+    protected void checkIfTooOld()
     {
-        age++;
-        if(age > MAX_AGE) {
+        if(getAge() > MAX_AGE) {
             setDead();
         }
     }
@@ -88,7 +82,7 @@ public class Snake extends Predator
      */
     protected boolean breedSuccess()
     {
-        return age >= BREEDING_AGE && randDouble() <= BREEDING_PROBABILITY;
+        return getAge() >= BREEDING_AGE && randDouble() <= BREEDING_PROBABILITY;
     }
     
     /**

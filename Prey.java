@@ -174,11 +174,6 @@ public abstract class Prey extends Animal
         return births;
     }
 
-    /**
-     * Increase the age.
-     * This could result in the prey's death.
-     */
-    abstract protected void incrementAge();
 
     /**
      * Create a new prey as offspring.
@@ -206,4 +201,6 @@ public abstract class Prey extends Animal
      * @return true if the prey can move, false otherwise.
      */
     abstract protected boolean canMove(Time time);
+    
+    abstract protected void checkIfTooOld();
 }

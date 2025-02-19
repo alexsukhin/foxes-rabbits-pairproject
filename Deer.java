@@ -20,10 +20,6 @@ public class Deer extends Prey
     // The maximum number of births.
     private static final int MAX_LITTER_SIZE = 3;
     
-    // Individual characteristics (instance fields).
-    
-    // The deer's age.
-    private int age;
 
     /**
      * Create a new deer. A deer may be created with age
@@ -35,16 +31,18 @@ public class Deer extends Prey
     public Deer(boolean randomAge, Location location)
     {
         super(location);
-        age = 0;
         if(randomAge) {
-            age = randInt(MAX_AGE);
+            setAge(randInt(MAX_AGE));
+        }
+        else {
+            setAge(0);
         }
     }
     
     @Override
     public String toString() {
         return "Deer{" +
-                "age=" + age +
+                "age=" + getAge() +
                 ", alive=" + isAlive() +
                 ", location=" + getLocation() +
                 '}';
@@ -54,10 +52,9 @@ public class Deer extends Prey
      * Increase the age.
      * This could result in the deer's death.
      */
-    protected void incrementAge()
+    protected void checkIfTooOld()
     {
-        age++;
-        if(age > MAX_AGE) {
+        if(getAge() > MAX_AGE) {
             setDead();
         }
     }
@@ -69,7 +66,7 @@ public class Deer extends Prey
      */
     protected boolean breedSuccess()
     {
-        return age >= BREEDING_AGE && randDouble() <= BREEDING_PROBABILITY;
+        return getAge() >= BREEDING_AGE && randDouble() <= BREEDING_PROBABILITY;
     }
     
     /**

@@ -20,11 +20,6 @@ public class Armadillo extends Prey
     // The maximum number of births.
     private static final int MAX_LITTER_SIZE = 5;
 
-    // Individual characteristics (instance fields).
-
-    // The armadillo's age.
-    private int age;
-
     /**
      * Create a new armadillo. A armadillo may be created with age
      * zero (a new born) or with a random age.
@@ -35,16 +30,18 @@ public class Armadillo extends Prey
     public Armadillo(boolean randomAge, Location location)
     {
         super(location);
-        age = 0;
         if(randomAge) {
-            age = randInt(MAX_AGE);
+            setAge(randInt(MAX_AGE));
+        }
+        else {
+            setAge(0);
         }
     }
 
     @Override
     public String toString() {
         return "Armadillo{" +
-        "age=" + age +
+        "age=" + getAge() +
         ", alive=" + isAlive() +
         ", location=" + getLocation() +
         '}';
@@ -54,10 +51,9 @@ public class Armadillo extends Prey
      * Increase the age.
      * This could result in the armadillo's death.
      */
-    protected void incrementAge()
+    protected void checkIfTooOld()
     {
-        age++;
-        if(age > MAX_AGE) {
+        if(getAge() > MAX_AGE) {
             setDead();
         }
     }
@@ -69,7 +65,7 @@ public class Armadillo extends Prey
      */
     protected boolean breedSuccess()
     {
-        return age >= BREEDING_AGE && randDouble() <= BREEDING_PROBABILITY;
+        return getAge() >= BREEDING_AGE && randDouble() <= BREEDING_PROBABILITY;
     }
 
     /**

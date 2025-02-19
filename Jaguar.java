@@ -25,10 +25,6 @@ public class Jaguar extends Predator
     // The likelihood of a jaguar hunting during the night.
     private static final double DAY_HUNT_PROBABILITY = 0.25;
 
-    // Individual characteristics (instance fields).
-
-    // The jaguar's age.
-    private int age;
 
     /**
      * Create a jaguar. A jaguar can be created as a new born (age zero
@@ -41,17 +37,17 @@ public class Jaguar extends Predator
     {
         super(location, Deer.class);
         if(randomAge) {
-            age = randInt(MAX_AGE);
+            setAge(randInt(MAX_AGE));
         }
         else {
-            age = 0;
+            setAge(0);
         }
     }
 
     @Override
     public String toString() {
         return "Jaguar{" +
-        "age=" + age +
+        "age=" + getAge() +
         ", alive=" + isAlive() +
         ", location=" + getLocation() +
         ", foodLevel=" +
@@ -61,10 +57,9 @@ public class Jaguar extends Predator
     /**
      * Increase the age. This could result in the jaguar's death.
      */
-    protected void incrementAge()
+    protected void checkIfTooOld()
     {
-        age++;
-        if(age > MAX_AGE) {
+        if(getAge() > MAX_AGE) {
             setDead();
         }
     }
@@ -90,7 +85,7 @@ public class Jaguar extends Predator
      */
     protected boolean breedSuccess()
     {
-        return age >= BREEDING_AGE && randDouble() <= BREEDING_PROBABILITY;
+        return getAge() >= BREEDING_AGE && randDouble() <= BREEDING_PROBABILITY;
     }
 
     /**

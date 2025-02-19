@@ -14,7 +14,10 @@ public abstract class Animal extends Organism
     private boolean female;
     // Whether the animal is infected
     private boolean infected;
+    // Randomizer to generate randomness in simulation.
     private static final Random rand = Randomizer.getRandom();
+    // Animal's age
+    private int age;
 
     /**
      * Constructor for objects of class Animal.
@@ -25,6 +28,7 @@ public abstract class Animal extends Organism
         super(location);
         Random random = new Random();
         female = random.nextBoolean();
+        age=0;
         if (rand.nextDouble() < 0.005) {
             infected = true;
         }
@@ -118,4 +122,22 @@ public abstract class Animal extends Organism
     {
         return rand.nextDouble();
     }
+    
+    public void incrementAge()
+    {
+        age++;
+        checkIfTooOld();
+    }
+    
+    public int getAge()
+    {
+        return age;
+    }
+    
+    public void setAge(int newAge)
+    {
+        age = newAge;
+    }
+    
+    abstract protected void checkIfTooOld();
 }
