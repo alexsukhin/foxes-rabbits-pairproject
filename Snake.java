@@ -13,13 +13,16 @@ public class Snake extends Predator
     // The age at which a snake can start to breed.
     private static final int BREEDING_AGE = 15;
     // The age to which a snake can live.
-    private static final int MAX_AGE = 200;
+    private static final int MAX_AGE = 250;
     // The likelihood of a snake breeding.
-    private static final double BREEDING_PROBABILITY = 0.3;
+    private static final double BREEDING_PROBABILITY = 0.35;
     // The maximum number of births.
     private static final int MAX_LITTER_SIZE = 30;
+    // Snakes are mostly diurnal (active at day).
     // The likelihood of a snake hunting at night.
     private static final double NIGHT_HUNT_PROBABILITY = 0.25;
+    // The likelihood of a snake hunting at night.
+    private static final double DAY_HUNT_PROBABILITY = 0.9;
     
     // Individual characteristics (instance fields).
 
@@ -113,10 +116,10 @@ public class Snake extends Predator
      */
     public boolean huntSuccess(Time time) {
         if (time == Time.NIGHT) {
-            return randDouble() >= NIGHT_HUNT_PROBABILITY;
+            return randDouble() <= NIGHT_HUNT_PROBABILITY;
         } 
         else {
-            return true;
+            return randDouble() <= DAY_HUNT_PROBABILITY;
         }
     }
 }

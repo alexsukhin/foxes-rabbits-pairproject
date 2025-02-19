@@ -15,13 +15,16 @@ public class Ocelot extends Predator
     // The age at which a ocelot can start to breed.
     private static final int BREEDING_AGE = 15;
     // The age to which a ocelot can live.
-    private static final int MAX_AGE = 180;
+    private static final int MAX_AGE = 150;
     // The likelihood of a ocelot breeding.
     private static final double BREEDING_PROBABILITY = 0.3;
     // The maximum number of births.
     private static final int MAX_LITTER_SIZE = 5;
+    // Ocelots are nocturnal but are somewhat active during day as well.
     // The probability of an ocelot to hunt at night.
-    private static final double NIGHT_HUNT_PROBABILITY = 0.25;
+    private static final double NIGHT_HUNT_PROBABILITY = 0.75;
+    // The probability of an ocelot to hunt at day.
+    private static final double DAY_HUNT_PROBABILITY = 0.5;
     
     // Individual characteristics (instance fields).
 
@@ -53,10 +56,10 @@ public class Ocelot extends Predator
      */
     public boolean huntSuccess(Time time) {
         if (time == Time.NIGHT) {
-            return randDouble() >= NIGHT_HUNT_PROBABILITY;
+            return randDouble() <= NIGHT_HUNT_PROBABILITY;
         } 
         else {
-            return true;
+            return randDouble() <= DAY_HUNT_PROBABILITY;
         }
     }
 

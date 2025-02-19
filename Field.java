@@ -160,48 +160,33 @@ public class Field
      */
     public void fieldStats()
     {
-        int numOcelotes = 0, numArmadillos = 0, numDeers = 0, 
-        numSnakes = 0, numWolves = 0, numInfected = 0;
+        HashMap<Class<?>, Integer> counts = new HashMap<>();
+        int numInfected = 0;
         for(Pair<Animal, Plant> pair : field.values()) {
-            
             Animal anAnimal = pair.first();
           
             if (anAnimal != null && anAnimal.isInfected()) {
                 numInfected++;
             }
 
-            if(anAnimal instanceof Ocelot ocelot) {
-                if(ocelot.isAlive()) {
-                    numOcelotes++;
+            if (anAnimal != null && anAnimal.isAlive()) {
+                Class<?> animalClass = anAnimal.getClass();
+                if (counts.get(animalClass) == null) {
+                    counts.put(animalClass, 1);
                 }
-            }
-            else if(anAnimal instanceof Armadillo armadillo) {
-                if(armadillo.isAlive()) {
-                    numArmadillos++;
-                }
-            }
-            else if(anAnimal instanceof Deer deer) {
-                if(deer.isAlive()) {
-                    numDeers++;
-                }
-            }
-            else if(anAnimal instanceof Snake snake) {
-                if(snake.isAlive()) {
-                    numSnakes++;
-                }
-            }
-            else if(anAnimal instanceof Jaguar jaguar) {
-                if(jaguar.isAlive()) {
-                    numWolves++;
+                else {
+                    int newCount = counts.get(animalClass) + 1;
+                    counts.put(animalClass, newCount);
                 }
             }
         }
-        System.out.println("Armadillos: " + numArmadillos +
-            " Ocelotes: " + numOcelotes +
-            " Deers: " + numDeers +
-            " Snakes: " + numSnakes +
-            " Wolves: " + numWolves +
-            " Infected: " + numInfected);
+        
+        Set<Class<?>> animalClasses = counts.keySet();
+        String output = "";
+        for (Class<?> animalClass : animalClasses) {
+            output += animalClass.getSimpleName() + ": " + counts.get(animalClass) + " ";
+        }
+        System.out.println(output + "Infected: " + numInfected);
     }
 
     public int infectedCount() {

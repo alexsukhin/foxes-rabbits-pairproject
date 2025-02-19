@@ -16,9 +16,9 @@ public class Armadillo extends Prey
     // The age to which a armadillo can live.
     private static final int MAX_AGE = 30;
     // The likelihood of a armadillo breeding.
-    private static final double BREEDING_PROBABILITY = 0.8;
+    private static final double BREEDING_PROBABILITY = 0.7;
     // The maximum number of births.
-    private static final int MAX_LITTER_SIZE = 6;
+    private static final int MAX_LITTER_SIZE = 5;
 
     // Individual characteristics (instance fields).
 

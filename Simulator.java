@@ -97,7 +97,7 @@ public class Simulator
 
         List<Plant> plants = field.getPlants();
         for (Plant plant : plants) {
-            plant.act(field, nextFieldState);
+            plant.act(field, nextFieldState, time);
         }
 
         // Replace the old state with the new one.

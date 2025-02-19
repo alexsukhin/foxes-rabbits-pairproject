@@ -21,5 +21,5 @@ public abstract class Plant extends Organism
      * @param currentField The current state of the field.
      * @param nextFieldState The new state being built.
      */
-    abstract public void act(Field currentField, Field nextFieldState);
+    abstract public void act(Field currentField, Field nextFieldState, Time time);
 }

@@ -14,13 +14,16 @@ public class Jaguar extends Predator
     // The age at which a jaguar can start to breed.
     private static final int BREEDING_AGE = 15;
     // The age to which a jaguar can live.
-    private static final int MAX_AGE = 150;
+    private static final int MAX_AGE = 180;
     // The likelihood of a jaguar breeding.
     private static final double BREEDING_PROBABILITY = 0.08;
     // The maximum number of births.
     private static final int MAX_LITTER_SIZE = 2;
+    // Jaguars are primarily nocturnal, with low hunting during day.
     // The likelihood of a jaguar hunting during the night.
-    private static final double NIGHT_HUNT_PROBABILITY = 0.5;
+    private static final double NIGHT_HUNT_PROBABILITY = 0.9;
+    // The likelihood of a jaguar hunting during the night.
+    private static final double DAY_HUNT_PROBABILITY = 0.25;
 
     // Individual characteristics (instance fields).
 
@@ -115,10 +118,10 @@ public class Jaguar extends Predator
      */
     public boolean huntSuccess(Time time) {
         if (time == Time.NIGHT) {
-            return randDouble() >= NIGHT_HUNT_PROBABILITY;
+            return randDouble() <= NIGHT_HUNT_PROBABILITY;
         } 
         else {
-            return true;
+            return randDouble() <= DAY_HUNT_PROBABILITY;
         }
     }
 }

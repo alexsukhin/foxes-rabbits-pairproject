@@ -28,7 +28,7 @@ public class LeafCell extends Plant
      * @param currentField The field currently occupied.
      * @param nextFieldState The updated field.
      */
-    public void act(Field currentField, Field nextFieldState)
+    public void act(Field currentField, Field nextFieldState, Time time)
     {
         if (isAlive()) {
             nextFieldState.placePlant(this, getLocation());
