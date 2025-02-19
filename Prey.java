@@ -20,6 +20,7 @@ public abstract class Prey extends Animal
 
     /**
      * Constructor for objects of class Prey
+     * @param location The prey's location.
      */
     public Prey(Location location)
     {

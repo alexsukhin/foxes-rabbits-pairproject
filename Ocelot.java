@@ -80,7 +80,7 @@ public class Ocelot extends Predator
     
     /**
      * Check if the given animal is a prey of Ocelot.
-     * @param Animal The animal to check if its a prey.
+     * @param animal The animal to check if its a prey.
      * @return true, if the animal is a prey, otherwise false.
      */
     protected boolean isPrey(Animal animal) {
