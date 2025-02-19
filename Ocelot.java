@@ -69,7 +69,7 @@ public class Ocelot extends Predator
     }
 
     /**
-     * Increase the age. This could result in the ocelot's death.
+     *  Check if the ocelot is too old to live.
      */
     protected void checkIfTooOld()
     {

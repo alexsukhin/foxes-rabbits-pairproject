@@ -216,5 +216,8 @@ public abstract class Predator extends Animal
      */
     abstract protected boolean huntSuccess(Time time);
     
+    /**
+     *  Check if the predator is too old to live.
+     */
     abstract protected void checkIfTooOld();
 }

@@ -44,6 +44,11 @@ public abstract class Animal extends Organism
      */
     abstract public void act(Field currentField, Field nextFieldState, Time time, Weather weather);
     
+    /**
+     * Check whether the animal will act at this step, considering weather conditions.
+     * @param weather The current weather conditions
+     * @return true if the animal acts, otherwise false.
+     */
     public boolean canAct(Weather weather) {
         if (weather == Weather.CLEAR) {
             return true;
@@ -77,6 +82,10 @@ public abstract class Animal extends Organism
         return false;
     }
     
+    /**
+     * Check whether this animal is infected.
+     * @param field The current state of the field.
+     */
     public void checkIfInfected(Field field) {
         List<Location> adjacentLocations = field.getAdjacentLocations(getLocation());
         for (Location loc : adjacentLocations) {
@@ -123,21 +132,35 @@ public abstract class Animal extends Organism
         return rand.nextDouble();
     }
     
+    /**
+     * Increase the age. This could result in the animal's death.
+     */
     public void incrementAge()
     {
         age++;
-        checkIfTooOld();
+        checkIfTooOld(); // Check if the animal is too old to be alive.
     }
     
+    /**
+     * Get the age of the animal.
+     * @return age Age of the animal
+     */
     public int getAge()
     {
         return age;
     }
     
+    /**
+     * Set the age of the animal.
+     * @return age Age of the animal
+     */
     public void setAge(int newAge)
     {
         age = newAge;
     }
     
+    /**
+     *  Check if the animal is too old to live.
+     */
     abstract protected void checkIfTooOld();
 }

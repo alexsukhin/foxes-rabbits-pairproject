@@ -53,7 +53,7 @@ public class Snake extends Predator
     }
 
     /**
-     * Increase the age. This could result in the snake's death.
+     * Check if the snake is too old to live.
      */
     protected void checkIfTooOld()
     {

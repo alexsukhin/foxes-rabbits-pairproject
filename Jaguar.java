@@ -25,7 +25,6 @@ public class Jaguar extends Predator
     // The likelihood of a jaguar hunting during the night.
     private static final double DAY_HUNT_PROBABILITY = 0.25;
 
-
     /**
      * Create a jaguar. A jaguar can be created as a new born (age zero
      * and not hungry) or with a random age and food level.
@@ -55,7 +54,7 @@ public class Jaguar extends Predator
     }
 
     /**
-     * Increase the age. This could result in the jaguar's death.
+     * Check if the jaguar is too old to live.
      */
     protected void checkIfTooOld()
     {
@@ -63,7 +62,7 @@ public class Jaguar extends Predator
             setDead();
         }
     }
-    
+
     /**
      * Check if the given animal is a prey of Jaguar.
      * @param Animal The animal to check if its a prey.
@@ -105,7 +104,7 @@ public class Jaguar extends Predator
     protected int birthNumber() {
         return randInt(MAX_LITTER_SIZE) + 1;
     }
-    
+
     /**
      * Calculate whether a hunt is successful.
      * @param time The time of day/night.

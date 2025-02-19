@@ -49,8 +49,7 @@ public class Deer extends Prey
     }
 
     /**
-     * Increase the age.
-     * This could result in the deer's death.
+     * Check if the deer is too old to live.
      */
     protected void checkIfTooOld()
     {

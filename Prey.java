@@ -202,5 +202,8 @@ public abstract class Prey extends Animal
      */
     abstract protected boolean canMove(Time time);
     
+    /**
+     * Check if the prey is too old to live.
+     */
     abstract protected void checkIfTooOld();
 }

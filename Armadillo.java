@@ -48,8 +48,7 @@ public class Armadillo extends Prey
     }
 
     /**
-     * Increase the age.
-     * This could result in the armadillo's death.
+     * Check if the ocelot is too old to live.
      */
     protected void checkIfTooOld()
     {
